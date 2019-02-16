@@ -3,6 +3,8 @@ import pickle
 from ase.dft import kpoints
 import ginput
 import tbASE as tb
+from pyglib.gutz.init_magnet_conf import h5wrt_gmagnet
+
 
 def gutz_model_setup(u=0.0, spindeg=True, num_e=2., iembeddiag=-1):
     '''Set up Gutzwiller calculations for 2d body-centered square lattice.
@@ -89,8 +91,19 @@ def gutz_model_setup(u=0.0, spindeg=True, num_e=2., iembeddiag=-1):
     batch_initialize(cell=cell, scaled_positions=scaled_positions,
             symbols=symbols,idx_equivalent_atoms=[0,1],
             unique_u_list_ev=[u], iembeddiag=iembeddiag,
-            spin_polarization=spin_polarization,
-            updn_full_list=[1,-1])
+            spin_polarization=spin_polarization)
+
+    if not spindeg:
+        # set magnetic configuration
+        vext_list = []
+        vext = np.zeros((2,2), dtype=np.complex)
+        vext[0,0] = -1.
+        vext_list.append(vext)
+	vext = np.zeros((2,2), dtype=np.complex)
+        vext[1,1] = -1.
+        vext_list.append(vext)
+        # g_ivext=0: initial spin symmetry breaking.
+        h5wrt_gmagnet(vext_list, g_ivext=0) 
 
     # save the aTB
     with open('aTB.pckl', 'wb') as f:

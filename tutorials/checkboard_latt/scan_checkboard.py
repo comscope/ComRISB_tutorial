@@ -40,7 +40,7 @@ def generate_data(u_list, spindeg=True, fname='result', iembeddiag=-1):
     u = 0.
 
     # remove pre-existing Gutzwiller setup files.
-    for f in ['ginit.h5', 'GPARAM.h5']:
+    for f in ['ginit.h5', 'GPARAM.h5', 'GVEXT.h5']:
         if os.path.exists(f):
             os.remove(f)
 
@@ -152,7 +152,7 @@ def scan_u(spindeg=True, iembeddiag=-1, fname='result'):
         return
 
     # set range of Hubbard U.
-    u_list = np.arange(0.0, 20.0, 2)
+    u_list = np.arange(0.0, 20.0, 4)
     generate_data(u_list, spindeg=spindeg, fname=fname, iembeddiag=iembeddiag)
 
 

@@ -1,6 +1,6 @@
 import os, sys, h5py
 import numpy as np
-from checkboard
+import checkboard
 import subprocess
 
 import matplotlib
@@ -34,14 +34,13 @@ def generate_data(u_list, spindeg=True, fname='result', iembeddiag=-1):
     '''
     # get *CyGutz* command. Choose option '-r -1' to skip the claculation of
     # Gutzwiller renormalized electron density.
-    root = os.environ['WIEN_GUTZ_ROOT2']
-    cmd = [root+'/CyGutz', '-r', '-1', '-n', '500']
+    cmd = ['CyGutz', '-r', '-1', '-n', '500']
 
     # set Hubbard U=0
     u = 0.
 
     # remove pre-existing Gutzwiller setup files.
-    for f in ['ginit.h5', 'GPARAM.h5']:
+    for f in ['ginit.h5', 'GPARAM.h5', 'GVEXT.h5']:
         if os.path.exists(f):
             os.remove(f)
 
@@ -108,7 +107,7 @@ def generate_data(u_list, spindeg=True, fname='result', iembeddiag=-1):
         else:
             # to get double occupancy (of impurity 1), <n_up n_dn>_G,
             # we run analysis code *exe_spci_analysis*
-            subprocess.call([root+'/exe_spci_analysis', '1'])
+            subprocess.call(['exe_spci_analysis', '1'])
 
             # double occupancy is simply the local many-body
             # density matrix element in the valence=2 block.
@@ -153,7 +152,7 @@ def scan_u(spindeg=True, iembeddiag=-1, fname='result'):
         return
 
     # set range of Hubbard U.
-    u_list = np.arange(0.0, 20.0, 0.5)
+    u_list = np.arange(0.0, 20.0, 4)
     generate_data(u_list, spindeg=spindeg, fname=fname, iembeddiag=iembeddiag)
 
 
