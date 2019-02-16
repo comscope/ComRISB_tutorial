@@ -1,0 +1,112 @@
+ solving impurity  1
+ lambda_s2 = 2.2000
+ random vector serves as the starting point.
+--------------------------------------
+Number of outer iterations: 112
+Number of Restarts: 19
+Number of Matrix-vector products: 119
+Total elapsed wall clock Time: 4.74532
+--------------------------------------
+ zprimme:
+ dim_H = 184756
+ e(1) = -122.3814202366988582    residual norm =   0.1215E-05
+ <S^2> =  (3.749331073095836E-015,-1.136873725170431E-018)
+ iter = 1 maxerr =     0.00002362
+ solving impurity  1
+ lambda_s2 = 2.2000
+ random vector serves as the starting point.
+--------------------------------------
+Number of outer iterations: 112
+Number of Restarts: 19
+Number of Matrix-vector products: 119
+Total elapsed wall clock Time: 4.74914
+--------------------------------------
+ zprimme:
+ dim_H = 184756
+ e(1) = -122.3814192489299018    residual norm =   0.1215E-05
+ <S^2> =  (5.603414830170942E-015,-7.480194279317029E-020)
+ iter = 2 maxerr =     0.00001244
+ solving impurity  1
+ lambda_s2 = 2.2000
+ random vector serves as the starting point.
+--------------------------------------
+Number of outer iterations: 112
+Number of Restarts: 19
+Number of Matrix-vector products: 119
+Total elapsed wall clock Time: 4.73594
+--------------------------------------
+ zprimme:
+ dim_H = 184756
+ e(1) = -122.3814202367001087    residual norm =   0.1215E-05
+ <S^2> =  (4.776455016721397E-015,2.653198358376087E-019)
+ iter = 3 maxerr =     0.00002362
+ solving impurity  1
+ lambda_s2 = 2.2000
+ random vector serves as the starting point.
+--------------------------------------
+Number of outer iterations: 112
+Number of Restarts: 19
+Number of Matrix-vector products: 119
+Total elapsed wall clock Time: 4.75873
+--------------------------------------
+ zprimme:
+ dim_H = 184756
+ e(1) = -122.3814922479106428    residual norm =   0.1215E-05
+ <S^2> =  (5.795233076282679E-015,9.854434247915734E-019)
+ iter = 4 maxerr =     0.00002441
+ solving impurity  1
+ lambda_s2 = 2.2000
+ random vector serves as the starting point.
+--------------------------------------
+Number of outer iterations: 112
+Number of Restarts: 19
+Number of Matrix-vector products: 119
+Total elapsed wall clock Time: 4.73788
+--------------------------------------
+ zprimme:
+ dim_H = 184756
+ e(1) = -122.3814202365670951    residual norm =   0.1215E-05
+ <S^2> =  (4.283837913504067E-015,1.257347618305104E-018)
+ iter = 5 maxerr =     0.00002362
+ solving impurity  1
+ lambda_s2 = 2.2000
+ random vector serves as the starting point.
+--------------------------------------
+Number of outer iterations: 112
+Number of Restarts: 19
+Number of Matrix-vector products: 119
+Total elapsed wall clock Time: 4.75322
+--------------------------------------
+ zprimme:
+ dim_H = 184756
+ e(1) = -122.3814218869988650    residual norm =   0.1215E-05
+ <S^2> =  (5.061034806263751E-015,4.259980154648093E-020)
+ iter = 6 maxerr =     0.00002853
+ solving impurity  1
+ lambda_s2 = 2.2000
+ random vector serves as the starting point.
+--------------------------------------
+Number of outer iterations: 112
+Number of Restarts: 19
+Number of Matrix-vector products: 119
+Total elapsed wall clock Time: 4.79581
+--------------------------------------
+ zprimme:
+ dim_H = 184756
+ e(1) = -122.3814931571706239    residual norm =   0.1215E-05
+ <S^2> =  (5.754065683063758E-015,5.457737681624877E-020)
+ iter = 7 maxerr =     0.00002101
+ solving impurity  1
+ lambda_s2 = 2.2000
+ random vector serves as the starting point.
+--------------------------------------
+Number of outer iterations: 112
+Number of Restarts: 19
+Number of Matrix-vector products: 119
+Total elapsed wall clock Time: 4.76719
+--------------------------------------
+ zprimme:
+ dim_H = 184756
+ e(1) = -122.3819638614588001    residual norm =   0.1217E-05
+ <S^2> =  (5.164099324954838E-015,-2.975682991986011E-019)
+ iter = 8 maxerr =     0.00000007
