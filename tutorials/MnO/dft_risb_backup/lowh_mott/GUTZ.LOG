@@ -1,4 +1,5 @@
  cygutz vmpi_5.0
+ command argument g_updaterho =  0
  total number of impurities =    1
  impurity type indices:
        1
@@ -74,8 +75,8 @@
  correlated block: emin/emix=   -7.4689   20.9024
  band gap identified!
  gutz fermi level=     -2.78323510
- calc_band_all takes    0 h  0 m  0.20 s(cpu).
-                        0 h  0 m  0.60 s(wall).
+ calc_band_all takes    0 h  0 m  0.12 s(cpu).
+                        0 h  0 m  0.68 s(wall).
  band gap identified!
  gutz fermi level=     -2.78323510
 ************     nks-unsym  ************
@@ -238,8 +239,8 @@
    0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
    0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
  max error due to symmetrization =     0.000000
- calc_band_all takes    0 h  0 m  0.16 s(cpu).
-                        0 h  0 m  0.32 s(wall).
+ calc_band_all takes    0 h  0 m  0.05 s(cpu).
+                        0 h  0 m  0.15 s(wall).
  band gap identified!
  gutz fermi level=     -1.49190158
 ************     nks-unsym  ************
@@ -347,8 +348,8 @@
    0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
    0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
    0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
- calc_band_all takes    0 h  0 m  0.16 s(cpu).
-                        0 h  0 m  0.32 s(wall).
+ calc_band_all takes    0 h  0 m  0.06 s(cpu).
+                        0 h  0 m  0.19 s(wall).
  band gap identified!
  gutz fermi level=     -1.19627891
 ************     nks-unsym  ************
@@ -530,8 +531,8 @@
   -0.0000   0.0000   0.0000   0.0000  -0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
    0.0000  -0.0000   0.0000   0.0000   0.0000  -0.0000   0.0000   0.0000   0.0000   0.0000
  spci e_mol = 261.8133750 e_tot = -108.4381216
- solve_hembed takes    0 h  0 m  0.09 s(cpu).
-                       0 h  0 m  1.59 s(wall).
+ solve_hembed takes    0 h  0 m  0.04 s(cpu).
+                       0 h  0 m 17.35 s(wall).
 ************        r0-out  ************
  imp=  1
  real part
@@ -763,10 +764,6 @@
  imp =   1 s_xyz(physical    ) =     0.00000     0.00000     0.00000
            l_xyz(physical    ) =     0.00000     0.00000     0.00000
  e_total_model = -36.1571848
- correlated subspace, sum_ferwt = 11.0000000 sum_kswt = 11.0000000
-     max off diagonal of psik occ. mat. = .913389
- calc_kswt takes    0 h  0 m  0.14 s(cpu).
-                    0 h  0 m  0.14 s(wall).
  impurity-wise interaction energy:
         78.60714
  total impurity interaction energy = 78.6071429
@@ -780,5 +777,5 @@
  total band energy = -33.0985275
  max nelf diff=    0.00000000
  maximal local symmetrization error =    0.00000
- total takes    0 h  0 m  1.29 s(cpu).
-                0 h  0 m  4.18 s(wall).
+ total takes    0 h  0 m  0.49 s(cpu).
+                0 h  0 m 20.57 s(wall).
