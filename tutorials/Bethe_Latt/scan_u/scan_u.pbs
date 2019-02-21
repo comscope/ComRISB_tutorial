@@ -26,7 +26,19 @@ echo "--] Running job on " `hostname`
 echo Begin: `date`
 echo
 
+# copy files to local disk
+# because it really takes long time to write
+# the hdf5 file (BAREHAM_0.h5) of size 15Mb :(
+
+mkdir -p /tmp/$PBS_JOBID
+cp *py /tmp/$PBS_JOBID
+cd /tmp/$PBS_JOBID
+# now execute the job
 python scan_semicirc.py
+# copy results.
+cp -f * $WORKDIR
+cd ..
+rm -rf /tmp/$PBS_JOBID
 
 echo
 echo End: `date`

@@ -93,7 +93,7 @@ def gutz_model_setup(u=0.0, nmesh=5000, mu=0):
 	    u_avg_list = [0], j_avg_list=[0],
             max_iter=500)
     # adding vdc2 as external potential.
-    h5wrt_gmagnet(vdc2_list, g_ivext=1)
+    h5wrt_gmagnet(vdc2_list, g_ivext=0)
 
     # generate BAREHAM_0.h5 file.
     aTB.save_bareham(kps)

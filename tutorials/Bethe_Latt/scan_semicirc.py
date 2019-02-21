@@ -101,7 +101,6 @@ def generate_data(u_list, mu_list):
                 d = 0.
             d_list.append(d.real)
 
-
     with open('result.dat', 'w') as f:
         for u, mu, e, z, d, n in zip(u_list, mu_list,
                 e_list, z_list, d_list, n_list):
@@ -129,7 +128,7 @@ def scan_u(mu=0.0):
         return
 
     # set range of Hubbard U.
-    u_list = np.arange(0.0, 5.1, 0.2)
+    u_list = np.arange(0.0, 5.1, 0.5)
     mu_list = [mu for u in u_list]
     generate_data(u_list, mu_list)
 
@@ -147,7 +146,7 @@ def scan_mu(u=5.0):
         return
 
     # set range of chemical potential mu.
-    mu_list = np.arange(0.0, 3.1, 0.1)
+    mu_list = np.arange(0.0, 3.1, 0.4)
     u_list = [u for mu in mu_list]
     generate_data(u_list, mu_list)
 

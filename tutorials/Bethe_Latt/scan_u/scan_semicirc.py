@@ -67,7 +67,7 @@ def generate_data(u_list, mu_list):
         # also include chemical potential here.
         vdc2_list = [np.zeros((norb2,norb2), dtype=np.complex)]
         vdc2_list[0][0,0] = vdc2_list[0][1,1] = -u/2 + mu
-        h5wrt_gmagnet(vdc2_list, g_ivext=0)
+        h5wrt_gmagnet(vdc2_list, g_ivext=1)
 
         # perform the *CyGutz* calculation.
         subprocess.call(cmd)
@@ -128,7 +128,7 @@ def scan_u(mu=0.0):
         return
 
     # set range of Hubbard U.
-    u_list = np.arange(0.0, 5.1, 0.2)
+    u_list = np.arange(0.0, 5.1, 0.5)
     mu_list = [mu for u in u_list]
     generate_data(u_list, mu_list)
 
@@ -146,7 +146,7 @@ def scan_mu(u=5.0):
         return
 
     # set range of chemical potential mu.
-    mu_list = np.arange(0.0, 3.1, 0.1)
+    mu_list = np.arange(0.0, 3.1, 0.4)
     u_list = [u for mu in mu_list]
     generate_data(u_list, mu_list)
 
