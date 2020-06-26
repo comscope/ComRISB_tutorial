@@ -1,44 +1,39 @@
-import os, sys, h5py
+import os, sys, h5py, argparse, subprocess
 import numpy as np
-import semicir as bethlatt
-import subprocess
+from pygrisb.model import semicir as bethlatt
 from builtins import zip
-
-import matplotlib
-matplotlib.rcParams['backend'] = "Qt5Agg"
 import matplotlib.pyplot as plt
-
-from pyglib.gutz.init_magnet_conf import h5wrt_gmagnet
 
 
 def generate_data(u_list, mu_list):
     '''run *CyGutz* calculations for a list of U and mu.
     save the results in results.
+
     Parameters:
+
     * u_list: real array
       list of Hubbard U parameters.
     * mu_list: real array
       list of chemical potential
+
     Result:
+
     save the list of energies (e_list), double occupancy (d_list),
     quasi-particle weight (z_list) and occupation (n_list)
     to ``result.dat`` text file as well as the ``result.h5`` hdf5 file.
     '''
-    # get *CyGutz* command. Choose option '-r -1' to skip the claculation of
-    # Gutzwiller renormalized electron density.
-    cmd = ['CyGutz', '-r', '-1']
-
     # set chemical potential to 0.
     mu=0
 
     # set Hubbard U=0
     u = 0.
 
-    # spin-orbital dimension
-    norb2 = 2
-
     # generate input files with updated with u=0, mu=0
     bethlatt.gutz_model_setup(u=u, nmesh=5000, mu=mu)
+
+    # the import below need GParam.h5.
+    from pygrisb.run.cygutz import run_cygutz
+    from pygrisb.gsolver.solve_hembed import solve_hembed
 
     # total energy list
     e_list = []
@@ -55,46 +50,58 @@ def generate_data(u_list, mu_list):
     # loop over the list of U.
     for u, mu in zip(u_list, mu_list):
 
-        print(' working on u = {} mu = {}'.format(u, mu))
+        # message
+        print(f' working on u = {u} mu = {mu}')
 
         # modify the local Coulomb matrix
-        with h5py.File('GPARAM.h5', 'a') as f:
-            v2e = np.zeros((norb2,norb2,norb2,norb2), dtype=np.complex)
+        with h5py.File('GParam.h5', 'a') as f:
+
+            # note the transposition, which is transformation
+            # from Fortran convention to c-convention.
+            # dataset with a name in upper cases indicates fortran-order,
+            # and lower cases for c-order.
+            # Coulomb matrix
+            v2e = f['/impurity_0/V2E'][()].T
+            # additional potential for the purpose of
+            # particle-hole symmetry here.
+            vext = f["/vext/impurity_0/v"][()]
+
+            # now update the Coulom matrix
             v2e[0,0,0,0] = v2e[0,0,1,1] = v2e[1,1,0,0] = v2e[1,1,1,1] = u
-            f['/IMPURITY_1/V2E'][()] = v2e.T
-        # set the potential shift such that the system has particle-hole
-        # symmetry with recpect to zero.
-        # also include chemical potential here.
-        vdc2_list = [np.zeros((norb2,norb2), dtype=np.complex)]
-        vdc2_list[0][0,0] = vdc2_list[0][1,1] = -u/2 + mu
-        h5wrt_gmagnet(vdc2_list, g_ivext=1)
+            f['/impurity_0/V2E'][()] = v2e.T
+
+            # update vext, which keeps the particle-hole symmetry of the model
+            # for finite U.
+            vext[0, 0] = vext[1, 1] = -u/2 + mu
+            f["/vext/impurity_0/v"][()][()] = vext
 
         # perform the *CyGutz* calculation.
-        subprocess.call(cmd)
+        run_cygutz()
 
         # get total energy
-        with h5py.File('GLOG.h5', 'r') as f:
-            nks = f['/IMPURITY_1/NKS_SYM'][()]
+        with h5py.File('GLog.h5', 'r') as f:
+            # total electron filling.
+            nks = f["/impurity_0/NKS"][()]
             n = nks[0, 0] + nks[1, 1]
             n_list.append(n.real)
-            e = f['/etot_model'][0] + u/2*n -mu*n
+
+            # total energy (subtract vext contribution for symmetry.)
+            e = f['./'].attrs["etot_model"] + u/2*n - mu*n
             e_list.append(e.real)
 
-        # get Z = R^\dagger R
-        with h5py.File('WH_RL_OUT.h5', 'r') as f:
-            r = f['/IMPURITY_1/R'][0,0]
-
-            # simple here since it is just a scalar
+            # get Z = R^\dagger R
+            r = f['/impurity_0/R'][0, 0]
             z = r*r.conj()
             z_list.append(z.real)
 
-        # to get double occupancy (of impurity 1), <n_up n_dn>_G,
+        # To get double occupancy (of impurity 1), <n_up n_dn>_G,
         # we run analysis code *exe_spci_analysis*
-        subprocess.call(['exe_spci_analysis', '1'])
+        solve_hembed(edinit=1,
+                analysis=True)
 
         # double occupancy is simply the local many-body density matrix element
         # in the valence=2 block.
-        with h5py.File('EMBED_HAMIL_ANALYSIS_1.h5', 'r') as f:
+        with h5py.File('HEmbedAnalysis_0.h5', 'r') as f:
             if '/valence_block_2/RHO' in f:
                 d = f['/valence_block_2/RHO'][0, 0]
             else:
@@ -117,10 +124,14 @@ def generate_data(u_list, mu_list):
 
 def scan_u(mu=0.0):
     '''run *CyGutz* calculations for a list of U for a given mu.
+
     Parameters:
+
     * mu: real number
       the fixed chemical potential.
+
     Result:
+
     it will generate results for a u_list of np.arange(0.0, 5.1, 0.2)
     at fixed mu.
     '''
@@ -128,17 +139,21 @@ def scan_u(mu=0.0):
         return
 
     # set range of Hubbard U.
-    u_list = np.arange(0.0, 5.1, 0.5)
+    u_list = np.arange(0.0, 5.1, 0.2)
     mu_list = [mu for u in u_list]
     generate_data(u_list, mu_list)
 
 
 def scan_mu(u=5.0):
     '''run *CyGutz* calculations for a list of mu for a given u.
+
     Parameters:
+
     * u: real number
       the fixed Hubbard U
+
     Result:
+
     it will generate results for a mu_list = np.arange(0.0, 3.1, 0.1)
     at fixed u.
     '''
@@ -146,7 +161,7 @@ def scan_mu(u=5.0):
         return
 
     # set range of chemical potential mu.
-    mu_list = np.arange(0.0, 3.1, 0.4)
+    mu_list = np.arange(0.0, 3.1, 0.1)
     u_list = [u for mu in mu_list]
     generate_data(u_list, mu_list)
 
@@ -196,9 +211,14 @@ def plot_scan_mu():
 
 
 if __name__=='__main__':
-    if '-mu' in sys.argv:
-        scan_mu()
-        plot_scan_mu()
-    else:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-j","--job", type=int, default=0,
+            help="job type: 0->scan u; otherwise->scan mu.")
+    args = parser.parse_args()
+
+    if args.job == 0:
         scan_u()
         plot_scan_u()
+    else:
+        scan_mu()
+        plot_scan_mu()
