@@ -29,7 +29,7 @@ def generate_data(u_list, mu_list):
     u = 0.
 
     # generate input files with updated with u=0, mu=0
-    bethlatt.gutz_model_setup(u=u, nmesh=5000, mu=mu)
+    bethlatt.gutz_model_setup(u=u, nmesh=5000, mu=mu, iembeddiag=-3)
 
     # the import below need GParam.h5.
     from pygrisb.run.cygutz import run_cygutz
@@ -51,7 +51,7 @@ def generate_data(u_list, mu_list):
     for u, mu in zip(u_list, mu_list):
 
         # message
-        print(f' working on u = {u} mu = {mu}')
+        print(f' working on u = {u:.3f} mu = {mu:.3f}')
 
         # modify the local Coulomb matrix
         with h5py.File('GParam.h5', 'a') as f:
@@ -73,7 +73,7 @@ def generate_data(u_list, mu_list):
             # update vext, which keeps the particle-hole symmetry of the model
             # for finite U.
             vext[0, 0] = vext[1, 1] = -u/2 + mu
-            f["/vext/impurity_0/v"][()][()] = vext
+            f["/vext/impurity_0/v"][()] = vext
 
         # perform the *CyGutz* calculation.
         run_cygutz()
@@ -111,7 +111,8 @@ def generate_data(u_list, mu_list):
     with open('result.dat', 'w') as f:
         for u, mu, e, z, d, n in zip(u_list, mu_list,
                 e_list, z_list, d_list, n_list):
-            f.write('{} {} {} {} {} {}\n'.format(u, mu, e, z, d, n))
+            f.write('{:.2f} {:.2f} {:.5f} {:.3f} {:.3f} {:.3f}\n'.format( \
+                    u, mu, e, z, d, n))
 
     with h5py.File('result.h5', 'w') as f:
         f['/mu_list'] = mu_list
@@ -173,17 +174,21 @@ def plot_scan_u():
         z_list = f['/z_list'][()]
         d_list = f['/d_list'][()]
 
-    f, axarr = plt.subplots(3, sharex=True)
+    f, axarr = plt.subplots(3, sharex=True, figsize=(3,4))
     axarr[0].plot(u_list, e_list)
-    axarr[0].set_ylabel('energy')
+    axarr[0].set_ylabel('E')
+    axarr[0].axvline(x=3.4, ls=":")
     axarr[1].plot(u_list, d_list)
-    axarr[1].set_ylabel('double occupancy')
+    axarr[1].set_ylabel(r'$d$')
+    axarr[1].axvline(x=3.4, ls=":")
     axarr[2].plot(u_list, z_list)
     axarr[2].set_ylabel('Z')
     axarr[2].set_xlabel('U')
     axarr[2].set_xlim(min(u_list), max(u_list))
+    axarr[2].axvline(x=3.4, ls=":")
+    plt.tight_layout()
     plt.show()
-    f.savefig('result.png')
+    f.savefig('result_u.pdf')
 
 
 def plot_scan_mu():
@@ -194,19 +199,20 @@ def plot_scan_mu():
         d_list = f['/d_list'][()]
         n_list = f['/n_list'][()]
 
-    f, axarr = plt.subplots(4, sharex=True)
+    f, axarr = plt.subplots(4, sharex=True, figsize=(3,3))
     axarr[0].plot(mu_list, e_list)
-    axarr[0].set_ylabel('energy')
+    axarr[0].set_ylabel('E')
     axarr[1].plot(mu_list, d_list)
-    axarr[1].set_ylabel('double occupancy')
+    axarr[1].set_ylabel(r'$d$')
     axarr[2].plot(mu_list, z_list)
     axarr[2].set_ylabel('Z')
     axarr[3].plot(mu_list, n_list)
     axarr[3].set_ylabel('n')
     axarr[3].set_xlabel('$\mu$')
     axarr[3].set_xlim(min(mu_list), max(mu_list))
+    plt.tight_layout()
     plt.show()
-    f.savefig('result.png')
+    f.savefig('result_mu.pdf')
 
 
 
