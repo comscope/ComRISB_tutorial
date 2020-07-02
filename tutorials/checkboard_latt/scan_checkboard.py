@@ -1,11 +1,7 @@
-import os, sys, h5py
+import os, sys, h5py, subprocess
 import numpy as np
-import checkboard
-import subprocess
-
-import matplotlib
-matplotlib.rcParams['backend'] = "Qt5Agg"
 import matplotlib.pyplot as plt
+from pygrisb.model import checkboard
 
 
 def generate_data(u_list, spindeg=True, fname='result', iembeddiag=-1):
@@ -32,20 +28,20 @@ def generate_data(u_list, spindeg=True, fname='result', iembeddiag=-1):
     quasi-particle weight (z_list), magnetic moment (m_list),
     to ``fname.dat`` text file as well as the ``fname.h5`` hdf5 file.
     '''
-    # get *CyGutz* command. Choose option '-r -1' to skip the claculation of
-    # Gutzwiller renormalized electron density.
-    cmd = ['CyGutz', '-r', '-1', '-n', '500']
-
     # set Hubbard U=0
     u = 0.
 
     # remove pre-existing Gutzwiller setup files.
-    for f in ['ginit.h5', 'GPARAM.h5', 'GVEXT.h5']:
+    for f in ['ginit.h5', 'GParam.h5']:
         if os.path.exists(f):
             os.remove(f)
 
     # generate input files with updated with u=0
     checkboard.gutz_model_setup(u=u, spindeg=spindeg, iembeddiag=iembeddiag)
+
+    # the import below need GParam.h5.
+    from pygrisb.run.cygutz import run_cygutz
+    from pygrisb.gsolver.solve_hembed import solve_hembed
 
     # total energy list
     e_list = []
@@ -62,34 +58,29 @@ def generate_data(u_list, spindeg=True, fname='result', iembeddiag=-1):
     # loop over the list of U.
     for u in u_list:
 
-        print(' working on u = {}'.format(u))
+        print(f' working on u = {u}')
 
         # modify the local Coulomb matrix of two sites
-        with h5py.File('GPARAM.h5', 'a') as f:
-            for i in range(1,3):
+        with h5py.File('GParam.h5', 'a') as f:
+            for i in range(2):
                 # note the transposition, which is transformation
                 # from Fortran convention to c-convention.
-                v2e = f['/IMPURITY_{}/V2E'.format(i)][()].T
-
+                v2e = f[f'/impurity_{i}/V2E'][()].T
                 # now update the Coulom matrix
                 v2e[0,0,0,0] = v2e[0,0,1,1] = v2e[1,1,0,0] = v2e[1,1,1,1] = u
-                f['/IMPURITY_{}/V2E'.format(i)][()] = v2e.T
-
-            f['/dc_u_avg'][()] = [u, u]
+                f[f'/impurity_{i}/V2E'][()] = v2e.T
+            f['/'].attrs['dc_u_avg'] = [u, u]
 
         # perform the *CyGutz* calculation.
-        subprocess.call(cmd)
+        run_cygutz(cmdlargs=False)
 
         # get total energy
-        with h5py.File('GLOG.h5', 'r') as f:
-            e = f['/etot_model'][0]
+        with h5py.File('GLog.h5', 'r') as f:
+            e = f['./'].attrs["etot_model"]
             e_list.append(e.real)
 
-        # get Z = R^\dagger R
-        with h5py.File('WH_RL_OUT.h5', 'r') as f:
-            r = f['/IMPURITY_1/R'][0,0]
-
-            # simple here since it is just a scalar
+            # get Z = R^\dagger R
+            r = f['/impurity_0/R'][0, 0]
             z = r*r.conj()
             z_list.append(z.real)
 
@@ -97,40 +88,45 @@ def generate_data(u_list, spindeg=True, fname='result', iembeddiag=-1):
         if iembeddiag == 10:
             # in the single-orbital case, double occupancy is simply
             # <n_up>_0 <n_dn>_0
-            with h5py.File('GLOG.h5', 'r') as f:
-                nup = f['/IMPURITY_1/NKS_SYM'][0,0]
-                ndn = f['/IMPURITY_1/NKS_SYM'][1,1]
+            with h5py.File('GLog.h5', 'r') as f:
+                nup = f['/impurity_0/NKS'][0,0]
+                ndn = f['/impurity_0/NKS'][1,1]
                 d = nup*ndn
                 d_list.append(d.real)
                 m = nup - ndn
                 m_list.append(m)
         else:
-            # to get double occupancy (of impurity 1), <n_up n_dn>_G,
+            # To get double occupancy (of impurity 1), <n_up n_dn>_G,
             # we run analysis code *exe_spci_analysis*
-            subprocess.call(['exe_spci_analysis', '1'])
+            solve_hembed(edinit=1,
+                    analysis=True)
 
-            # double occupancy is simply the local many-body
-            # density matrix element in the valence=2 block.
-            with h5py.File('EMBED_HAMIL_ANALYSIS_1.h5', 'r') as f:
+            # double occupancy is simply the local many-body density
+            # matrix element in the valence=2 block.
+            with h5py.File('HEmbedAnalysis_0.h5', 'r') as f:
                 if '/valence_block_2/RHO' in f:
                     d = f['/valence_block_2/RHO'][0, 0]
                 else:
                     d = 0.
                 d_list.append(d.real)
 
-            with h5py.File('EMBED_HAMIL_RES_1.h5', 'r') as f:
+            with h5py.File('HEmbed.h5', 'r') as f:
                 # get the density matrix of the embedding Hamiltonian
                 # note the first half of the orbotals correspond to
                 # the physical one-body space
-                nup = f['/DM'][0, 0]
-                ndn = f['/DM'][1, 1]
+                nup = f[f'/impurity_0/ans/DM'][0, 0]
+                ndn = f[f'/impurity_0/ans/DM'][1, 1]
                 m = nup - ndn
                 m_list.append(m.real)
+        # remove z=1 initial guess
+        if abs(u) < 1:
+            os.remove("GLog.h5")
 
     # save to text file.
     with open(fname+'.dat', 'w') as f:
         for u, e, z, d, m in zip(u_list, e_list, z_list, d_list, m_list):
-            f.write('{} {} {} {} {}\n'.format(u, e, z, d, m))
+            f.write('{:.2f} {:.5f} {:.3f} {:.3f} {:.3f}\n'.format( \
+                    u, e, z, d, m))
 
     # save to hdf5 file.
     with h5py.File(fname+'.h5', 'w') as f:
@@ -152,7 +148,7 @@ def scan_u(spindeg=True, iembeddiag=-1, fname='result'):
         return
 
     # set range of Hubbard U.
-    u_list = np.arange(0.0, 20.0, 4)
+    u_list = np.arange(0.0, 20.0, 0.5)
     generate_data(u_list, spindeg=spindeg, fname=fname, iembeddiag=iembeddiag)
 
 
