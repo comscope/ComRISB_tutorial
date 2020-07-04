@@ -1,4 +1,4 @@
-import os, sys, h5py, subprocess
+import os, sys, h5py
 import numpy as np
 import matplotlib.pyplot as plt
 from pygrisb.model import checkboard
@@ -32,7 +32,7 @@ def generate_data(u_list, spindeg=True, fname='result', iembeddiag=-1):
     u = 0.
 
     # remove pre-existing Gutzwiller setup files.
-    for f in ['ginit.h5', 'GParam.h5']:
+    for f in ['GParam.h5']:
         if os.path.exists(f):
             os.remove(f)
 
@@ -114,12 +114,12 @@ def generate_data(u_list, spindeg=True, fname='result', iembeddiag=-1):
                 # get the density matrix of the embedding Hamiltonian
                 # note the first half of the orbotals correspond to
                 # the physical one-body space
-                nup = f[f'/impurity_0/ans/DM'][0, 0]
-                ndn = f[f'/impurity_0/ans/DM'][1, 1]
+                nup = f['/impurity_0/ans/DM'][0, 0]
+                ndn = f['/impurity_0/ans/DM'][1, 1]
                 m = nup - ndn
                 m_list.append(m.real)
         # remove z=1 initial guess
-        if abs(u) < 1:
+        if abs(u) < 1 or (abs(u) < 6 and not spindeg):
             os.remove("GLog.h5")
 
     # save to text file.
@@ -171,10 +171,12 @@ def plot_scan_u(fname='result'):
     axarr[0, 0].set_ylabel('energy')
     axarr[1, 0].plot(u_list, d_list)
     axarr[1, 0].set_ylabel('double occupancy')
+    axarr[1, 0].set_ylim(-0.01, 0.26)
     axarr[0, 1].plot(u_list, z_list)
     axarr[0, 1].yaxis.tick_right()
     axarr[0, 1].yaxis.set_label_position("right")
     axarr[0, 1].set_ylabel('Z')
+    axarr[0, 1].set_ylim(-0.05, 1.05)
     axarr[1, 1].plot(u_list, m_list)
     axarr[1, 1].set_ylabel('local $<S_{z}>$')
     axarr[1, 1].set_ylim(-1,1)
@@ -185,7 +187,7 @@ def plot_scan_u(fname='result'):
     axarr[1, 0].set_xlim(min(u_list), max(u_list))
     plt.tight_layout()
     plt.show()
-    f.savefig(fname+'.png')
+    f.savefig(fname+'.pdf')
 
 
 if __name__=='__main__':
