@@ -54,7 +54,7 @@ def plot_scan_u_pmafm():
     axarr[1, 0].set_xlim(min(u_list_pm), max(u_list_pm))
     plt.tight_layout()
     plt.show()
-    f.savefig('result_pmafm_gh2.png')
+    f.savefig('result_pmafm_gh2.pdf')
 
 
 
