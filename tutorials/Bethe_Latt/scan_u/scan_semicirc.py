@@ -76,7 +76,7 @@ def generate_data(u_list, mu_list):
             f["/vext/impurity_0/v"][()] = vext
 
         # perform the *CyGutz* calculation.
-        run_cygutz()
+        run_cygutz(cmdlargs=False)
 
         # get total energy
         with h5py.File('GLog.h5', 'r') as f:
@@ -162,7 +162,7 @@ def scan_mu(u=5.0):
         return
 
     # set range of chemical potential mu.
-    mu_list = np.arange(0.0, 3.1, 0.1)
+    mu_list = np.arange(0.0, 3.1, 0.1)[::-1]
     u_list = [u for mu in mu_list]
     generate_data(u_list, mu_list)
 
@@ -178,14 +178,17 @@ def plot_scan_u():
     axarr[0].plot(u_list, e_list)
     axarr[0].set_ylabel('E')
     axarr[0].axvline(x=3.4, ls=":")
+    axarr[0].text(0.85, 0.7, "(a)", transform=axarr[0].transAxes)
     axarr[1].plot(u_list, d_list)
     axarr[1].set_ylabel(r'$d$')
     axarr[1].axvline(x=3.4, ls=":")
+    axarr[1].text(0.85, 0.7, "(b)", transform=axarr[1].transAxes)
     axarr[2].plot(u_list, z_list)
     axarr[2].set_ylabel('Z')
     axarr[2].set_xlabel('U')
     axarr[2].set_xlim(min(u_list), max(u_list))
     axarr[2].axvline(x=3.4, ls=":")
+    axarr[2].text(0.85, 0.7, "(c)", transform=axarr[2].transAxes)
     plt.tight_layout()
     plt.show()
     f.savefig('result_u.pdf')
@@ -199,17 +202,27 @@ def plot_scan_mu():
         d_list = f['/d_list'][()]
         n_list = f['/n_list'][()]
 
-    f, axarr = plt.subplots(4, sharex=True, figsize=(3,3))
+    f, axarr = plt.subplots(4, sharex=True, figsize=(3,4))
     axarr[0].plot(mu_list, e_list)
     axarr[0].set_ylabel('E')
+    axarr[0].axvline(x=1.4, ls=":")
+    axarr[0].text(0.05, 0.7, "(a)", transform=axarr[0].transAxes)
     axarr[1].plot(mu_list, d_list)
     axarr[1].set_ylabel(r'$d$')
+    axarr[1].set_ylim(0, 0.01)
+    axarr[1].axvline(x=1.4, ls=":")
+    axarr[1].text(0.05, 0.7, "(b)", transform=axarr[1].transAxes)
     axarr[2].plot(mu_list, z_list)
     axarr[2].set_ylabel('Z')
+    axarr[2].axvline(x=1.4, ls=":")
+    axarr[2].set_ylim(-0.05, 1.05)
+    axarr[2].text(0.05, 0.7, "(c)", transform=axarr[2].transAxes)
     axarr[3].plot(mu_list, n_list)
     axarr[3].set_ylabel('n')
     axarr[3].set_xlabel('$\mu$')
+    axarr[3].axvline(x=1.4, ls=":")
     axarr[3].set_xlim(min(mu_list), max(mu_list))
+    axarr[3].text(0.05, 0.7, "(d)", transform=axarr[3].transAxes)
     plt.tight_layout()
     plt.show()
     f.savefig('result_mu.pdf')
@@ -218,13 +231,13 @@ def plot_scan_mu():
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-j","--job", type=int, default=0,
-            help="job type: 0->scan u; otherwise->scan mu.")
+    parser.add_argument("--mu", action="store_true",
+            help="job switch to scan_mu.")
     args = parser.parse_args()
 
-    if args.job == 0:
-        scan_u()
-        plot_scan_u()
-    else:
+    if args.mu:
         scan_mu()
         plot_scan_mu()
+    else:
+        scan_u()
+        plot_scan_u()
