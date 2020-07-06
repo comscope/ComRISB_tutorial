@@ -210,6 +210,7 @@ def plot_scan_mu():
     axarr[2].plot(mu_list, z_list)
     axarr[2].set_ylabel('Z')
     axarr[2].axvline(x=1.4, ls=":")
+    axarr[2].set_ylim(-0.05, 1.05)
     axarr[3].plot(mu_list, n_list)
     axarr[3].set_ylabel('n')
     axarr[3].set_xlabel('$\mu$')
