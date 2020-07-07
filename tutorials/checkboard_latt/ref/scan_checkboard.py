@@ -168,9 +168,9 @@ def plot_scan_u(fname='result'):
 
     f, axarr = plt.subplots(2, 2, sharex=True)
     axarr[0, 0].plot(u_list, e_list)
-    axarr[0, 0].set_ylabel('energy')
+    axarr[0, 0].set_ylabel('$E$')
     axarr[1, 0].plot(u_list, d_list)
-    axarr[1, 0].set_ylabel('double occupancy')
+    axarr[1, 0].set_ylabel('$d$')
     axarr[1, 0].set_ylim(-0.01, 0.26)
     axarr[0, 1].plot(u_list, z_list)
     axarr[0, 1].yaxis.tick_right()
