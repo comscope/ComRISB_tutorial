@@ -44,6 +44,32 @@ def plot_scan_u_pmafm():
     axarr[0, 1].yaxis.set_label_position("right")
     axarr[0, 1].set_ylabel('Z')
     axarr[0, 1].text(0.85, 0.7, "(b)", transform=axarr[0, 1].transAxes)
+    # lattice
+    axins = axarr[0, 1].inset_axes([0.0, 0.05, 0.5, 0.5])
+    axins.set_aspect(1)
+    axins.set_xlim(0, 1)
+    axins.set_ylim(0, 1)
+    from matplotlib.markers import MarkerStyle as ms
+    axins.scatter(0.15, 0.15, s=150, marker=ms('o', 'none'), c="r")
+    axins.scatter(0.15, 0.85, s=150, marker=ms('o', 'none'), c="r")
+    axins.scatter(0.85, 0.15, s=150, marker=ms('o', 'none'), c="r")
+    axins.scatter(0.85, 0.85, s=150, marker=ms('o', 'none'), c="r")
+    axins.scatter(0.5, 0.5, s=150, marker=ms('o', 'none'), c="r")
+    axins.plot([0.15, 0.15], [0.15, 0.85], color='k', linestyle='--')
+    axins.plot([0.85, 0.85], [0.15, 0.85], color='k', linestyle='--')
+    axins.plot([0.15, 0.85], [0.15, 0.15], color='k', linestyle='--')
+    axins.plot([0.15, 0.85], [0.85, 0.85], color='k', linestyle='--')
+    axins.text(0.65, 0.3, "$t$", transform=axins.transAxes)
+    axins.text(0.5, 0.6, "$U$", transform=axins.transAxes)
+    axins.set_axis_off()
+    import matplotlib.patches as patches
+    style = "Simple, tail_width=0.5, head_width=4, head_length=8"
+    kw = dict(arrowstyle=style, color="k")
+    a3 = patches.FancyArrowPatch((0.85, 0.15), (0.5, 0.5),
+            connectionstyle="arc3,rad=.5", **kw)
+    axins.add_patch(a3)
+
+
     axarr[1, 1].plot(u_list_pm[::2], m_list_pm[::2], 'o')
     axarr[1, 1].plot(u_list_rhf, m_list_rhf, '-')
     axarr[1, 1].plot(u_list_afm[::2], m_list_afm[::2], 'o')
