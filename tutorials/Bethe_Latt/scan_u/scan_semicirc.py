@@ -72,8 +72,10 @@ def generate_data(u_list, mu_list):
 
             # update vext, which keeps the particle-hole symmetry of the model
             # for finite U.
-            vext[0, 0] = vext[1, 1] = -u/2 + mu
+            vext[0, 0] = vext[1, 1] = -u/2
             f["/vext/impurity_0/v"][()] = vext
+            with h5py.File("GBareH.h5", "a") as f:
+                f["/"].attrs["chempot"] = mu
 
         # perform the *CyGutz* calculation.
         run_cygutz(cmdlargs=False)
@@ -86,7 +88,7 @@ def generate_data(u_list, mu_list):
             n_list.append(n.real)
 
             # total energy (subtract vext contribution for symmetry.)
-            e = f['./'].attrs["etot_model"] + u/2*n - mu*n
+            e = f['./'].attrs["etot_model"] + u/2
             e_list.append(e.real)
 
             # get Z = R^\dagger R
@@ -96,8 +98,10 @@ def generate_data(u_list, mu_list):
 
         # To get double occupancy (of impurity 1), <n_up n_dn>_G,
         # we run analysis code *exe_spci_analysis*
-        solve_hembed(edinit=1,
-                analysis=True)
+        solve_hembed(
+                edinit=1,
+                analysis=True,
+                )
 
         # double occupancy is simply the local many-body density matrix element
         # in the valence=2 block.
@@ -107,6 +111,9 @@ def generate_data(u_list, mu_list):
             else:
                 d = 0.
             d_list.append(d.real)
+        # do not use previous solution
+        # impoprtant! default initial la1 at chemical potential.
+        os.remove("GLog.h5")
 
     with open('result.dat', 'w') as f:
         for u, mu, e, z, d, n in zip(u_list, mu_list,
@@ -162,7 +169,7 @@ def scan_mu(u=5.0):
         return
 
     # set range of chemical potential mu.
-    mu_list = np.arange(0.0, 3.1, 0.1)[::-1]
+    mu_list = np.arange(0.0, 3.1, 0.2)
     u_list = [u for mu in mu_list]
     generate_data(u_list, mu_list)
 
@@ -209,7 +216,7 @@ def plot_scan_mu():
     axarr[0].text(0.05, 0.7, "(a)", transform=axarr[0].transAxes)
     axarr[1].plot(mu_list, d_list)
     axarr[1].set_ylabel(r'$d$')
-    axarr[1].set_ylim(0, 0.01)
+    # axarr[1].set_ylim(0, 0.25)
     axarr[1].axvline(x=1.4, ls=":")
     axarr[1].text(0.05, 0.7, "(b)", transform=axarr[1].transAxes)
     axarr[2].plot(mu_list, z_list)
