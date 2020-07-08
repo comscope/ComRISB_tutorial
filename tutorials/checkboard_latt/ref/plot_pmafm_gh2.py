@@ -21,6 +21,10 @@ def plot_scan_u_pmafm():
     u_list_uhf, e_list_uhf, z_list_uhf, d_list_uhf, m_list_uhf = \
             get_scan_data(fname='result_afm_uhf')
 
+    # plt.plot(u_list_afm[3:], e_list_afm[3:] - e_list_pm[3:], "o")
+    # plt.plot(u_list_afm[3:], -4/u_list_afm[3:], "--")
+    # plt.show()
+
     f, axarr = plt.subplots(2, 2, sharex=True,
             gridspec_kw={'wspace':0.05, 'hspace':0.05})
     axarr[0, 0].plot(u_list_pm[::2], e_list_pm[::2], 'o', label='PM-G')
