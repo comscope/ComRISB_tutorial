@@ -1,1 +1,0 @@
-~/GitLab/comrisb/ComBin/cif2matdelab.py FeBCC.cif --rmt '{26: 1.90}' -k 4.22
