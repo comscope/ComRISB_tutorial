@@ -1,0 +1,1 @@
+~/GitLab/comrisb/bin/stepin_wien_gutz.py -jobq -w dft -j job.slurm
