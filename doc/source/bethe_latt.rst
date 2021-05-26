@@ -34,7 +34,7 @@ For convenience, we have also predefined a function
 to run *CyGutz* for a list of Hubbard :math:`U` 
 or chemical potential :math:`\mu`,
 
-.. autofunction:: scan_semicirc.generate_data
+.. autofunction:: pygrisb.model.test.scan_semicirc.generate_data
 
 Let us first look at the case of :math:`\mu=0`, 
 i.e., in the particle-hole symmetric case. 
@@ -47,7 +47,7 @@ where all the spectral weight becomes non-coherent.
 
 A script for a job of scanning :math:`U` is defined as
 
-.. autofunction:: scan_semicirc.scan_u
+.. autofunction:: pygrisb.model.test.scan_semicirc.scan_u
 
 For a hands-on practice, change to a testing directory, 
 copy the source file or download :download:`scan_semicirc.py 
@@ -71,7 +71,7 @@ it is possible to get the band gap size by varying the chemical potential.
 
 A script for a job of scanning :math:`\mu` at :math:`U=5` is defined as
 
-.. autofunction:: scan_semicirc.scan_mu
+.. autofunction:: pygrisb.model.test.scan_semicirc.scan_mu
 
 Type the following command::
 

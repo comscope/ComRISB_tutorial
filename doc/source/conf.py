@@ -19,7 +19,7 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('./'))
-sys.path.insert(0, os.path.abspath('/home/ykent/GitLab/pygrisb/pygrisb/pygrisb/model/test'))
+sys.path.insert(0, os.path.abspath('../../../GitLab/pygrisb/pygrisb/pygrisb/model/test'))
 
 # -- General configuration ------------------------------------------------
 
