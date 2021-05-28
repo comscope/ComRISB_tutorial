@@ -1,7 +1,7 @@
 1. For calculations with different U, type
 
 ```sh
-$ cd work
+$ mkdir -p work && cd work
 $ python ../scan_semicirc.py
 ```
 

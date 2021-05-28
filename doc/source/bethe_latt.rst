@@ -53,7 +53,7 @@ For a hands-on practice, assuminig your current directory
 is *comrisb_tutorial/tutorials/Bethe_Latt/*, 
 type the following command to run the job::
 
-    $ cd work
+    $ mkdir -p work && cd work
     $ python ../scan_semicirc.py
 
 It will automatically generate the following results:

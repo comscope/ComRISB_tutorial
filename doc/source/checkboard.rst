@@ -20,7 +20,7 @@ For convenience, we have also predefined a function
 to run *CyGutz* for a list of Hubbard :math:`U` 
 in paramagnetic (PM) or AFM phase.
 
-.. autofunction:: scan_checkboard.generate_data
+.. autofunction:: pygrisb.model.test.scan_checkboard.generate_data
 
 Let us perform a series of *CyGutz* calculations with increasing :math:`U`
 in the PM phase, 
@@ -33,14 +33,14 @@ where all the spectral weight becomes non-coherent.
 
 A script for a job of scanning :math:`U` in PM phase is defined as
 
-.. autofunction:: scan_checkboard.scan_u
+.. autofunction:: pygrisb.model.test.scan_checkboard.scan_u
 
-For a hands-on practice, change to a testing directory, 
-copy the source file or download :download:`scan_checkboard.py 
-<../../../../GitLab/pygrisb/pygrisb/pygrisb/model/test/scan_checkboard.py>`.
-Type the following command::
+For a hands-on practice, from the directory 
+*comrisb_tutorial/tutorials/checkboard_latt* 
+type the following command::
 
-    $ python ./scan_checkboard.py
+    $ mkdir -p work && cd work
+    $ python ../scan_checkboard.py
 
 It will automatically generate the following results:
 
@@ -59,7 +59,7 @@ i.e., there are two sublattices with up and down local spin moment.
 Type the same command with an inline argument of '-sp' to trigger 
 the setup of AFM phase::
 
-    $ python ./scan_checkboard.py -sp
+    $ python ../scan_checkboard.py -sp
 
 Here the user is advised to review the follwing function
 
@@ -85,11 +85,9 @@ of the single spin-orbital channels,
 evidenced by the rising local spin moment, 
 as it is defined as :math:`<S_{z}> = <n_up> - <b_dn>`.
 
-It would be interesting to compare the results of PM and AFM phase. 
-By downloading the script :download:`plot_pmafm.py
-<../../../../GitLab/pygrisb/pygrisb/pygrisb/model/test/plot_pmafm.py>` and typing::
+To compare the results of PM and AFM phase, type::
 
-    $ python ./plot_pmafm.py
+    $ python ../plot_pmafm.py
 
 One would get the following figure:
 
@@ -109,7 +107,7 @@ obtained in the Gutzwiller method
 compare with the results from simple Hartree-Fock (HF) mean-field approach.
 The HF-type calculations can be conveniently be performed by typing::
 
-    $ python ./scan_checkboard.py -uhf
+    $ python ../scan_checkboard.py -uhf
 
 where the inline argument '-uhf' changes the flag of `iembeddiag` to 10,
 corresponding to solve the embedding Hamiltonian of the Gutzwiller method 
@@ -125,12 +123,9 @@ the following figure will be generated:
 One can see similar features as the results based on Gutzwiller calculations,
 but here the kinetic energy renormalization factor :math:`Z` is a constant 1.
 
-To plot the three calculations together, one can download
-:download:`plot_pmafm_gh.py
-<../../../../GitLab/pygrisb/pygrisb/pygrisb/model/test/plot_pmafm_gh.py>` 
-and type::
+To compare the three calculations results together, type::
 
-    $ python ./plot_pmafm_gh.py
+    $ python ../plot_pmafm_gh.py
 
 The following figure will be produced:
 
@@ -156,7 +151,7 @@ degenerate ground states has been removed.
 In order yo visualize the ``static correlcation`` error in HF method,
 one can check the HF PM solutions. Typing the following commands::
 
-    $ python ./scan_checkboard.py -rhf
+    $ python ../scan_checkboard.py -rhf
 
 The following results will be shown:
 
@@ -169,12 +164,9 @@ One can clearly see the constant double occupancy
 and the consequent linear increasing of the total energy 
 in the spin-restricted HF (RHF) calculations.
 
-In comparison with all the other calculations, as shown by downloading
-:download:`plot_pmafm_gh2.py
-<../../../../GitLab/pygrisb/pygrisb/pygrisb/model/test/plot_pmafm_gh2.py>` 
-and typing::
+Finally, for comparisons with all calculations, type::
 
-    $ python ./plot_pmafm_gh2.py
+    $ python ../plot_pmafm_gh2.py
 
 The following produced figure clearly 
 shows the static correlation error of RHF, 

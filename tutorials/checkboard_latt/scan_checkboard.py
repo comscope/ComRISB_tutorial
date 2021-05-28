@@ -31,8 +31,8 @@ def generate_data(u_list, spindeg=True, fname='result', iembeddiag=-1):
     # set Hubbard U=0
     u = 0.
 
-    # remove pre-existing Gutzwiller setup files.
-    for f in ['GParam.h5']:
+    # remove pre-existing Gutzwiller files.
+    for f in ['GParam.h5', 'GLog.h5']:
         if os.path.exists(f):
             os.remove(f)
 
@@ -158,7 +158,7 @@ def get_scan_data(fname='result'):
         e_list = f['/e_list'][()]
         z_list = f['/z_list'][()]
         d_list = f['/d_list'][()]
-        m_list = f['/m_list'][()]
+        m_list = abs(f['/m_list'][()])
 
     return u_list, e_list, z_list, d_list, m_list
 
@@ -168,9 +168,9 @@ def plot_scan_u(fname='result'):
 
     f, axarr = plt.subplots(2, 2, sharex=True)
     axarr[0, 0].plot(u_list, e_list)
-    axarr[0, 0].set_ylabel('energy')
+    axarr[0, 0].set_ylabel('$E$')
     axarr[1, 0].plot(u_list, d_list)
-    axarr[1, 0].set_ylabel('double occupancy')
+    axarr[1, 0].set_ylabel('$d$')
     axarr[1, 0].set_ylim(-0.01, 0.26)
     axarr[0, 1].plot(u_list, z_list)
     axarr[0, 1].yaxis.tick_right()
