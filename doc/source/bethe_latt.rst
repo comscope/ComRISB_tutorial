@@ -49,12 +49,12 @@ A script for a job of scanning :math:`U` is defined as
 
 .. autofunction:: pygrisb.model.test.scan_semicirc.scan_u
 
-For a hands-on practice, change to a testing directory, 
-copy the source file or download :download:`scan_semicirc.py 
-<../../../../GitLab/pygrisb/pygrisb/pygrisb/model/test/scan_semicirc.py>`.
-Type the following command::
+For a hands-on practice, assuminig your current directory 
+is *comrisb_tutorial/tutorials/Bethe_Latt/*, 
+type the following command to run the job::
 
-    $ python ./scan_semicirc.py
+    $ cd work
+    $ python ../scan_semicirc.py
 
 It will automatically generate the following results:
 
@@ -73,9 +73,10 @@ A script for a job of scanning :math:`\mu` at :math:`U=5` is defined as
 
 .. autofunction:: pygrisb.model.test.scan_semicirc.scan_mu
 
-Type the following command::
+Stay in the same *work* directory 
+and type the following command for calculations to get the band gap::
 
-    $ python ./scan_semicirc.py -mu
+    $ python ../scan_semicirc.py -mu
 
 It will automatically generate the following results:
 

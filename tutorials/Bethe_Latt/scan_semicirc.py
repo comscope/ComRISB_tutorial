@@ -1,11 +1,11 @@
-import os, sys, h5py, argparse, subprocess
+import os, h5py, argparse
 import numpy as np
 from pygrisb.model import semicir as bethlatt
 from builtins import zip
 import matplotlib.pyplot as plt
 
 
-def generate_data(u_list, mu_list):
+def generate_data(u_list, mu_list, adiabatic=True, postfix="u"):
     '''run *CyGutz* calculations for a list of U and mu.
     save the results in results.
 
@@ -53,6 +53,9 @@ def generate_data(u_list, mu_list):
         # message
         print(f' working on u = {u:.3f} mu = {mu:.3f}')
 
+        if not adiabatic and os.path.isfile("GLog.h5"):
+            os.remove("GLog.h5")
+
         # modify the local Coulomb matrix
         with h5py.File('GParam.h5', 'a') as f:
 
@@ -74,8 +77,10 @@ def generate_data(u_list, mu_list):
             # for finite U.
             vext[0, 0] = vext[1, 1] = -u/2
             f["/vext/impurity_0/v"][()] = vext
-            with h5py.File("GBareH.h5", "a") as f:
-                f["/"].attrs["chempot"] = mu
+
+        with h5py.File("GBareH.h5", "a") as f:
+            f["/"].attrs["chempot"] = mu
+            f["/"].attrs["shft_init_la1"] = mu
 
         # perform the *CyGutz* calculation.
         run_cygutz(cmdlargs=False)
@@ -111,9 +116,6 @@ def generate_data(u_list, mu_list):
             else:
                 d = 0.
             d_list.append(d.real)
-        # do not use previous solution
-        # impoprtant! default initial la1 at chemical potential.
-        os.remove("GLog.h5")
 
     with open('result.dat', 'w') as f:
         for u, mu, e, z, d, n in zip(u_list, mu_list,
@@ -121,7 +123,7 @@ def generate_data(u_list, mu_list):
             f.write('{:.2f} {:.2f} {:.5f} {:.3f} {:.3f} {:.3f}\n'.format( \
                     u, mu, e, z, d, n))
 
-    with h5py.File('result.h5', 'w') as f:
+    with h5py.File(f'result_{postfix}.h5', 'w') as f:
         f['/mu_list'] = mu_list
         f['/u_list'] = u_list
         f['/e_list'] = e_list
@@ -143,7 +145,7 @@ def scan_u(mu=0.0):
     it will generate results for a u_list of np.arange(0.0, 5.1, 0.2)
     at fixed mu.
     '''
-    if os.path.isfile('result.h5'):
+    if os.path.isfile('result_u.h5'):
         return
 
     # set range of Hubbard U.
@@ -165,23 +167,23 @@ def scan_mu(u=5.0):
     it will generate results for a mu_list = np.arange(0.0, 3.1, 0.1)
     at fixed u.
     '''
-    if os.path.isfile('result.h5'):
+    if os.path.isfile('result_mu.h5'):
         return
 
     # set range of chemical potential mu.
     mu_list = np.arange(0.0, 3.1, 0.2)
     u_list = [u for mu in mu_list]
-    generate_data(u_list, mu_list)
+    generate_data(u_list, mu_list, adiabatic=False, postfix="mu")
 
 
 def plot_scan_u():
-    with h5py.File('result.h5', 'r') as f:
+    with h5py.File('result_u.h5', 'r') as f:
         u_list = f['/u_list'][()]
         e_list = f['/e_list'][()]
         z_list = f['/z_list'][()]
         d_list = f['/d_list'][()]
 
-    f, axarr = plt.subplots(3, sharex=True, figsize=(3,4))
+    f, axarr = plt.subplots(3, sharex=True, figsize=(6,6))
     axarr[0].plot(u_list, e_list)
     axarr[0].set_ylabel('E')
     axarr[0].axvline(x=3.4, ls=":")
@@ -198,18 +200,18 @@ def plot_scan_u():
     axarr[2].text(0.85, 0.7, "(c)", transform=axarr[2].transAxes)
     plt.tight_layout()
     plt.show()
-    f.savefig('result_u.pdf')
+    f.savefig('result_u.png')
 
 
 def plot_scan_mu():
-    with h5py.File('result.h5', 'r') as f:
+    with h5py.File('result_mu.h5', 'r') as f:
         mu_list = f['/mu_list'][()]
         e_list = f['/e_list'][()]
         z_list = f['/z_list'][()]
         d_list = f['/d_list'][()]
         n_list = f['/n_list'][()]
 
-    f, axarr = plt.subplots(4, sharex=True, figsize=(3,4))
+    f, axarr = plt.subplots(4, sharex=True, figsize=(6,6))
     axarr[0].plot(mu_list, e_list)
     axarr[0].set_ylabel('E')
     axarr[0].axvline(x=1.4, ls=":")
@@ -232,7 +234,7 @@ def plot_scan_mu():
     axarr[3].text(0.05, 0.7, "(d)", transform=axarr[3].transAxes)
     plt.tight_layout()
     plt.show()
-    f.savefig('result_mu.pdf')
+    f.savefig('result_mu.png')
 
 
 
