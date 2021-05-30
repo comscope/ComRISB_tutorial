@@ -83,7 +83,7 @@ between the effect of increasing onsite interaction,
 which will reduce :math:`Z`, and that of approaching empty/full filling 
 of the single spin-orbital channels,
 evidenced by the rising local spin moment, 
-as it is defined as :math:`<S_{z}> = <n_up> - <b_dn>`.
+as it is defined as :math:`<S_{z}> = <n_{up}> - <n_{dn}>`.
 
 To compare the results of PM and AFM phase, type::
 
