@@ -13,6 +13,7 @@ You will learn:
 
 In the model, we use nearest neighbor hopping :math:`t` as the energy unit. 
 A function to setup the model for *CyGutz* calculation has been defined,
+.. _gutz_model_setup:
 
 .. autofunction:: pygrisb.model.checkboard.gutz_model_setup
     
@@ -61,9 +62,7 @@ the setup of AFM phase::
 
     $ python ../scan_checkboard.py -sp
 
-Here the user is advised to review the follwing function
-
-.. autofunction:: pygrisb.model.checkboard.gutz_model_setup
+Here the user is advised to review the previous function:ref:`gutz_model_setup`.
 
 where spindeg changes to ``False`` by the inline argument '-sp',
 and 'updn_full_list=[1,-1]' will be used in the ``batch_initialize``.
