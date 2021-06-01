@@ -11,3 +11,4 @@ Nicola Lanata, Gabriel Kotliar, with contributions from Xiaoyu Deng, among other
   bethe_latt
   checkboard
   fe
+  fese
