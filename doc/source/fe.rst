@@ -11,7 +11,7 @@ DFT-LDA calculation of Fe
 Starting with the directory *3_Fe*, follow the steps below 
 to finish the DFT-LDA calculations. Type::
 
-    $ makdir -p dft && cd dft
+    $ mkdir -p dft && cd dft
     $ # create files ini, kpath, and kpoints for FlapwMBPT calculation.
     $ ${COMRISB_BIN}/../ComBin/cif2matdelab.py ../bcc.cif -k 3
     $ # create your own job file and submit 
