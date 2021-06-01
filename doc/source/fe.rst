@@ -1,13 +1,13 @@
-ComRISB calculation of :math:`\alpha`-Fe
-----------------------------------------
+ComRISB calculation of Fe
+-------------------------
 In this example, we will review the DFT-LDA calculations 
-with the FlapwMBPT package[Kutepov2017]_, 
+with the FlapwMBPT package [Kutepov2017]_, 
 using :math:`\alpha`-Fe as an example. 
 DFT+GRISB calculations of the paramagnetic (PM) and ferromagnetic (FM) phase 
 with ComRISB package will be demonstrated. 
 
-DFT-LDA calculation of :math:`\alpha`-Fe
-========================================
+DFT-LDA calculation of Fe
+=========================
 Starting with the directory *3_Fe*, follow the steps below 
 to finish the DFT-LDA calculations. Type::
 
@@ -26,10 +26,10 @@ And the DFT-LDA energy reaches
 
 *dft: ETOT F =     -2541.074138668239    -2541.074855981326*.
 
-DFT+GRISB calculation of PM :math:`\alpha`-Fe with zero interaction
-===================================================================
+DFT+GRISB calculation of PM Fe with zero interaction
+====================================================
 We will first perform a DFT+GRISB calculation with zero interaction, 
-i.e., :math:`*U=J=0`. 
+i.e., :math:`U=J=0`. 
 The purpose is to demonstrate that it is exactly equivalent to LDA, 
 and to facilitate the illustration of correlation effects 
 on the spectral function at a later step. 
@@ -240,8 +240,8 @@ It generates band structure decorated with `3d`-orbital weights.
     :scale: 100 %
     :align: center
 
-DFT+GRISB calculation of PM :math:`\alpha`-Fe
-=============================================
+DFT+GRISB calculation of PM Fe
+==============================
 One way to set up the calculation is create a new directory *u5j0.8* 
 and repeat the above procedure with the correct nonzero interaction parameters.
 Here we introduce an alternative easier way by simply modifying the parameters
@@ -346,8 +346,8 @@ and one obtained the following figure.
     :align: center
 
 
-DFT+GRISB calculation of FM :math:`\alpha`-Fe with screened interaction
-=======================================================================
+DFT+GRISB calculation of FM Fe with screened interaction
+========================================================
 In the previous step, we performed a DFT+GRISB calculation for Fe
 with interaction parameters `U=5` eV and `J=0.8` eV. 
 There another FM solution of lower energy to be explored. 
