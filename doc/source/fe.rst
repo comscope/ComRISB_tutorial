@@ -11,7 +11,7 @@ DFT-LDA calculation of :math:`\alpha`-Fe
 Starting with the directory *3_Fe*, follow the steps below 
 to finish the DFT-LDA calculations. Type::
 
-    $ makdir -p dft
+    $ makdir -p dft && cd dft
     $ # create files ini, kpath, and kpoints for FlapwMBPT calculation.
     $ ${COMRISB_BIN}/../ComBin/cif2matdelab.py ../bcc.cif -k 3
     $ # create your own job file and submit 
@@ -26,132 +26,428 @@ And the DFT-LDA energy reaches
 
 *dft: ETOT F =     -2541.074138668239    -2541.074855981326*.
 
+DFT+GRISB calculation of PM :math:`\alpha`-Fe with zero interaction
+===================================================================
+We will first perform a DFT+GRISB calculation with zero interaction, 
+i.e., :math:`*U=J=0`. 
+The purpose is to demonstrate that it is exactly equivalent to LDA, 
+and to facilitate the illustration of correlation effects 
+on the spectral function at a later step. 
+
+Changing back to the directory *3_Fe*, follow the steps below
+to finish the DFT+GRISB calculations with zero interaction. Type::
+
+    $ mkdir -p dftg/u0j0/lowh && cp bcc.cif dftg/u0j0/lowh/. && cd dftg/u0j0/lowh
+    $ ${COMRISB_BIN}/init_grisb.py -u eV -s 1
+    $ # -u eV: set internal energy unit to be eV.
+    $ # -s 1: set spin z-component order to be -1/2 to 1/2.
+
+Following the screenshot below to specify the GRISB calculation. 
+Press `enter`-key to make your choice::
+
+ structure info read from bcc.cif.
+
+ User inputs to initialize G-RISB simulation.
+ [?] Break spin-symmetry: no
+  > no
+    yes
+
+ [?] Break orbital-symmetry: crystal field effect
+    no
+  > crystal field effect
+    full symmetry breaking
+ 
+ [?] Include spin-orbit coupling: no
+  > no
+    yes
+ 
+ [?] Parametrize Coulomb-matrix: Slater-Condo with [U,J]
+  > Slater-Condo with [U,J]
+    Slater-Condo with [F0,F2,...]
+    Kanamori with [U,J]
+    Manual input
+ 
+ [?] Coulomb double counting: FLL dc (updated at charge iter., Rec.)
+  > FLL dc (updated at charge iter., Rec.)
+    Fix dc potential
+    FLL dc self-consistent
+    No dc
+ 
+ [?] Solution of embedding Hamiltonian: VTED with Sz symmetry
+    Valence truncation ED (VTED)
+  > VTED with Sz symmetry
+    VTED with S=0
+    VTED with Jz symmetry
+    ML (kernel-ridge)
+    ML (normal-mode-1d)
+    DMGR (expt.)
+    ML (normal-mode-2d)
+    ML (normal-mode-3d)
+    HF (debugging only)
+ 
+ Equivalent atom indices:
+     [0 0 0 1 1] means 0-2 and 3-4 are two sets of eq. atms.
+ [?] Equivalent atom indices: [0]
+  > [0]
+    modify
+ 
+ 
+  ------------
+  atom 0 Fe
+ [?] Is this atom correlated (Y/n):
+ [?] Correlated orbital: d
+    s
+    p
+  > d
+    f
+ 
+ [?] Enter U J(sep. by space, eV): 0 0
+ n_symm_ops = 48 from point-group analysis
+            = 48 after screening.
+ correlated atom 0 with point group: Oh.
+ chi_space 0: 1 equivalent ireps
+               (5, 3) basis vectors.
+ chi_space 1: 1 equivalent ireps
+               (5, 2) basis vectors.
+
+This finishes the manual initialization. 
+Alternative ways for initialization will be touched in the next steps.
+Two new files are created: *ginit.json* and *GParam.h5*. 
+*ginit.json* saves all the information for initialization in json format, 
+and *GParam.h5* is an input file for the GRISB calculation in hdf5 format.
+One can check the data structure by typing::
+
+    $ h5ls -r GParam.h5
+
+The following information will be displayed on the screen::
+
+ /                        Group
+ /impurity_0              Group
+ /impurity_0/V2E          Dataset {10, 10, 10, 10}
+ /impurity_0/db2sab       Dataset {10, 10}
+ /impurity_0/lie_params   Dataset {2, 24, 3}
+ /impurity_0/lx           Dataset {10, 10}
+ /impurity_0/ly           Dataset {10, 10}
+ /impurity_0/lz           Dataset {10, 10}
+ /impurity_0/matrix_basis Dataset {2, 10, 10}
+ /impurity_0/sx           Dataset {10, 10}
+ /impurity_0/sy           Dataset {10, 10}
+ /impurity_0/symbol_matrix Dataset {10, 10}
+ /impurity_0/symm_operations_3d Dataset {48, 3, 3}
+ /impurity_0/symm_operations_csh Dataset {48
+
+
+Use the followint command to view a specific dataset, 
+for instance, the symbolic matrix for local self-energy structure 
+simplified due to point group symmetry::
+
+    $ h5dump -d /impurity_0/symbol_matrix GParam.h5
+
+The following information will be displayed on the screen::
+
+ HDF5 "GParam.h5" {
+ DATASET "/impurity_0/symbol_matrix" {
+    DATATYPE  H5T_STD_I64LE
+    DATASPACE  SIMPLE { ( 10, 10 ) / ( 10, 10 ) }
+    DATA {
+    (0,0): 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    (1,0): 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    (2,0): 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    (3,0): 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    (4,0): 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    (5,0): 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    (6,0): 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,
+    (7,0): 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
+    (8,0): 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
+    (9,0): 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
+    }
+ }
+ }
+
+Specifically, here it shows a :math:`e_g-t_{2g}` splitting.
+
+To perform DFT+GRISB calculation, 
+an additional input file *comrisb.ini* in text format
+is prepared in the upper directory *u0j0*. 
+It is a simplified version of *comdmft.ini* for the DMFT calculation 
+using *comsuite* package [Choi2109]_,
+which provides information for the construction of wannier interface
+by the *ComWann* module.
+The *comrisb.ini* reads, in this example, as::
+
+ control={
+         'initial_dft_dir': '../../dft/',
+         'method': 'lda+risb',
+         'mpi_prefix': "mpirun -np 8",
+         'max_iter_num_outer': 50,
+         'impurity_problem': [[1, 'd']],
+         'impurity_problem_equivalence': [1],
+         }
+ 
+ wan_hmat={
+         'froz_win_min': -10.0,
+         'froz_win_max': 10.0,
+         }
+
+To run the DFT+GRISB calculation, execute the following command 
+or prepare your job script accordingly and submit::
+
+    $ cd ..  # up to u0j0 folder
+    $ ${COMRISB_BIN}/comrisb.py -c  # -c: continuous run
+
+As expected, the job converges with one iteration. 
+The file *convergence.log* records the convergence information::
+
+ i_outer    delta_rho            etot           mu    err_risb       min_z
+ ---------  -----------  --------------  -----------  ----------  ----------
+        0   0.00000001  -2541.07413883  -0.00000032  0.00000041  0.99999992
+
+The total energy *etot* is the same as DFT-LDA result, 
+and the kinetic energy renormalization factor is identity.
+The timing information is saved in file *cmd.log*.
+
+Several local quantities of interest are occupations 
+for :math:`t_{2g}` and :math:`e_{g}` orbitals, 
+which can be obtained from *lowh/GLog.h5* from the dataset */impurity_0/NC_PHY*, 
+or search for the last entries of *ncp-renorm* in *lowh/Gutz.log*::
+
+ ************    ncp-renorm  ************
+ imp=  1
+ real part
+   0.6769   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.6769   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.6769   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.6769   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.6769   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.6769   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.5996   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.5996   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.5996   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.5996
+   sub_tot=  6.459972  0.000000
+
+Each :math:`t_{2g}` orbital occupies 0.68 electrons, 
+and 0.60 for each :math:`e_{g}` orbital., with total 6.46 `3d`-electrons.
+
+The band structure can be obtained by using the following script::
+
+    $ cd lowh && ${COMRISB_BIN}/plot_band_tf.py -el -10 -eh 8 && cd ..
+
+It generates band structure decorated with `3d`-orbital weights.
+
+.. image:: _images/feldabands.png
+    :alt: Fe DFT-LDA bands
+    :scale: 100 %
+    :align: center
+
 DFT+GRISB calculation of PM :math:`\alpha`-Fe
 =============================================
+One way to set up the calculation is create a new directory *u5j0.8* 
+and repeat the above procedure with the correct nonzero interaction parameters.
+Here we introduce an alternative easier way by simply modifying the parameters
+with provided scripts. Starting with directory *u0j0*, type::
 
+    $ cd ../ && cp -r u0j0 u5j0.8 && cd u5j0.8/lowh/
+    $ ${COMRISB_BIN}/switch_gparam.py --unique_u_ev 5 --unique_j_ev 0.8
 
+Now we can start the calculation as previously::
 
-will learn how to perform a ferromagnetic
-DFT+G calculation using Wien2k plus CyGutz packages,
-including some typical post-analyses.
+    $ cd ..  # up to u5j0.8 folder
+    $ ${COMRISB_BIN}/comrisb.py -c
 
-1) Finish a self-consistent LDA paramagnetic calculation (run_lapw) 
-    for :math:`\alpha`-Fe (bcc) using Wien2k.
-    Here is the structure file
-    :download:`Fe.struct <./_files/Fe.struct>`. 
-    To compare with the provided results, 
-    one should keep the R\ :sub:`MT` = 2.33 as specified in the Fe.struct,
-    R\ :sub:`MT` * K\ :sub:`MAX` = 8.0 and total 
-    number of k-points = 5000 (17x17x17). 
-    We do not shift k-points here.
-    In the end, check the total LDA energy in the `Fe.scf` file, 
-    which should be close to -2541.12378 Ryd. 
+It will take 16 iterations to converge, with the *convergence.log* file::
 
-2) Use the following command to initialize the Gutzwiller calculation,
-    Type::
+  i_outer    delta_rho            etot           mu     err_risb       min_z
+  -------  -----------  --------------  -----------  -----------  ----------
+        0   0.00189709  -2540.91218004   0.06088410   0.00000009  0.81693596
+        1   0.00043149  -2540.91474874   0.06088307  -0.00000123  0.81693593
+        2   0.00004852  -2540.91473052  -0.01841208   0.00000072  0.81961856
+        3   0.00004149  -2540.91421012  -0.05360858  -0.00071526  0.82078603
+        4   0.00001536  -2540.91411466  -0.05859637  -0.00000040  0.82093853
+        5   0.00000442  -2540.91416410  -0.05392061  -0.00000404  0.82078284
+        6   0.00000217  -2540.91421368  -0.05114723  -0.00000065  0.82068645
+        7   0.00000129  -2540.91422747  -0.05094792   0.00000524  0.82067366
+        8   0.00000077  -2540.91422652  -0.05156255  -0.00000480  0.82070242
+        9   0.00000044  -2540.91422601  -0.05202869   0.00000124  0.82071461
+       10   0.00000026  -2540.91410120  -0.05186064  -0.00048290  0.82116617
+       11   0.00000012  -2540.91421954  -0.05225935  -0.00000312  0.82072632
+       12   0.00000007  -2540.91422142  -0.05217349   0.00000491  0.82071604
+       13   0.00000004  -2540.91422139  -0.05227547   0.00000274  0.82072138
+       14   0.00000002  -2540.91421786  -0.05236450   0.00000157  0.82072514
+       15   0.00000001  -2540.91422034  -0.05241289   0.00000587  0.82072286
+       16   0.00000001  -2540.91420773  -0.05241025  -0.00000471  0.82072818
 
-        $ ${WIEN_GUTZ_ROOT2}/init_ga.py 
+The updated local orbital occupations due to correlation can be read 
+from the *lowh/Gutz.log* file::
 
-    Answer the questions as follows:
+ ************    ncp-renorm  ************
+ imp=  1
+ real part
+   0.6792   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.6792   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.6792   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.6792   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.6792   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.6792   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.5936   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.5936   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.5936   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.5936
+   sub_tot=  6.449706  0.000000
 
-    * Do you want to BREAK SPIN-SYMMETRY: y
-    * Do you want to COMPLETELY break orbital-symmetry: n
-    * Do you want to take into account the SPIN-ORBIT interaction: n
-    * Do you want to take into account the CRYSTAL FIELD effect: y
-    * Please select the method to parametrize Coulomb U-matrix: 1
-    * Please select method for U-interaction double counting: 12
-    * Symmetrically-equivalent atom indices ...: y
-    * Enter up(1) dn(-1) or 0 for spin-moment of the atoms: 1
-    * Is this atom correlated: y
-    * Enter correlated shells: d
-    * Please provide interaction parameters U,J: 7.0 0.8
-    * Please provide initial guess ... localized d-electrons: 6.5
-    * Please select the method to solve G-RISB equations: 0
-    * Please select the method to solve embedding Hamiltonian: -1
+In this example, correlation effects introduce very small modification 
+to the orbital occupations.
 
-    Check the file `init_ga.slog` and you will see that 
-    the local self-energy structure has the following form 
-    in the single-particle basis with spin (up,down) 
-    as the faster index::
+The kinetic energy renormalization matrix :math:`Z=R^\dagger R` 
+can be retrieved from *lowh/GLog.h5* as the dataset */impurity_0/R*, 
+or from *lowh/Gutz.log* file::
 
-        [[1 0 0 0 0 0 0 0 0 0]
-         [0 3 0 0 0 0 0 0 0 0]
-         [0 0 1 0 0 0 0 0 0 0]
-         [0 0 0 3 0 0 0 0 0 0]
-         [0 0 0 0 1 0 0 0 0 0]
-         [0 0 0 0 0 3 0 0 0 0]
-         [0 0 0 0 0 0 2 0 0 0]
-         [0 0 0 0 0 0 0 4 0 0]
-         [0 0 0 0 0 0 0 0 2 0]
-         [0 0 0 0 0 0 0 0 0 4]]
+ ************     z-out-sym  ************
+ imp=  1
+ real part
+   0.8799   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.8799   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.8799   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.8799   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.8799   0.0000   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.8799   0.0000   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.8207   0.0000   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.8207   0.0000   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.8207   0.0000
+   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.8207
+ imp=  1 eigen values of         z:
+    0.8799    0.8799    0.8799    0.8799    0.8799    0.8799    0.8207    0.8207    0.8207    0.8207
 
-    Different integers are used for the spin-up and down conponents, 
-    inidcating spin-polarization. 
-    The self-energy is diagonal due to cubic symmetry.
+The `Z`-factor for :math:`t_{2g}` and :math:`e_g` orbital reduces 
+from identity to 0.88 and 0.82 respectively.
+
+The Gutzwiller quasi-particle band structure can be obtained 
+by using the same script as previously::
+
+    $ cd lowh && ${COMRISB_BIN}/plot_band_tf.py -el -10 -eh 8 && cd ..
+
+It generates band structure decorated with `3d`-orbital weights.
+
+.. image:: _images/ferisbbands.png
+    :alt: Fe DFT-GRISB bands
+    :scale: 100 %
+    :align: center
+
+To contrast the DFT+GRISB band structure of Fe 
+with DFT-LDA results obtained earlier, type::
     
-    To set up the magnetic configuration, type::
+    $ cd ../figure1 && python plot.py && cd ../u5j0.8
 
-        $ ${WIEN_GUTZ_ROOT2}/init_magnetism.py
+and one obtained the following figure.
 
-    Answer the questions as follows:
+.. image:: _images/fepmbands.png
+    :alt: Fe bands renormalized by correlation effects
+    :scale: 100 %
+    :align: center
 
-    * enter spin up or down: up
-    * please enter the magnitude of the field: 0.3
-    * Is the external field applied only at initial step (0) ...: 0
 
-    Here we add a 0.3 eV/Bohr magneton local magnetic field to 
-    break spin symmetry **INITIALLY**.
+DFT+GRISB calculation of FM :math:`\alpha`-Fe with screened interaction
+=======================================================================
+In the previous step, we performed a DFT+GRISB calculation for Fe
+with interaction parameters `U=5` eV and `J=0.8` eV. 
+There another FM solution of lower energy to be explored. 
+It can be investigated by a initial guess 
+of the GRISB nonlinear equation solution with FM-type spin symmetry breaking.
+Note that the exchange-correlation energy is still spin-symmetric LDA, 
+the energy gain is therefore purely from the onsite screened interactions.
 
-3) Type the command below to 
-    run the DFT+G calculation::
+To prepare the FM calculation, we follow the previous step 
+to create a new folder *u5j0.8_fm*. Type::
 
-        $ ${WIEN_GUTZ_ROOT2}/run_ga.py
+    $ cd .. && cp -r u5j0.8 u5j0.8_fm && cd u5j0.8_fm/lowh
 
-    After convergence, check the total energy in `Fe.scf` file, 
-    which should be close to -2540.94918 Ryd. 
-    You can also find ``total magnetic moment`` = 2.14
-    in the main output text file `GUTZ.LOG`.
+To introduce an initial guess for the FM solution, 
+we rerun the *init_grisb.py* script. 
+However, since the file *ginit.json* already exists, 
+the script will directly read informatin there 
+without explicitly asking any questions.
+This will simply regenerate the input file *GParam.h5* 
+for PM GRISB calculation.
+To introduce spin symmetry breaking, 
+one could delete *ginit.json* and answer questions properly 
+while running *init_grisb.py*. 
+We take another easier route by editing the *ginit.json* file. 
+Type the fillowing command to replace the value of *1* by *2*
+for spin-symmetry breaking::
 
-4) To plot the spin-resolved density of states 
-    with overall Fe-3d character, type::
+    $ sed -i 's/"ispin": 1/"ispin": 2/' ginit.json
 
-        $ ${WIEN_GUTZ_ROOT2}/plot_dos_tf.py
+Further information about how the spin symmetry is to be broken 
+needs to be provided through the script *init_magnetism.py*::
 
-    you will get figure as below
+    $ ${COMRISB_BIN}/init_magnetism.py
 
-    .. image:: _images/fe_dos.png
-       :alt: alternate text
-       :scale: 100 %
-       :align: center
+and choose the following as below::
 
-6) To calculate the bands structure along selected k-path, 
-    follow the steps below:
+ [?] choose unit used in CyGutz calculation: eV (1)
+    Rydberg (13.6)
+  > eV (1)
+ 
+ [?] which way to apply vext: initial step only
+  > initial step only
+    all iterations
+ 
+  total 1 impurities with equivalence indices
+  [0]
+ 
+  impurity 0
+ [?] enter field direction x y z seperated by space. (e.g., 0 0 1): 0 0 1
+ [?] enter b field magnitude (eV/Bohr magneton): 0.3
+  maximal symmetrization error of vext = 2.22e-16
 
-    (a) Prepare the fe.klist_band file for the high-symmetry k-path 
-        of the primitive Brillouin Zone. 
-        The SRC_templates directory of Wien2k has some examples.
-        For instance, we can use `bcc.klist` file.
-        Type the command to get the file::
+Final step for preparation, delete the file *GLog.h5* if present, 
+as it save the PM solution::
 
-            $ cp ${WIENROOT}/SRC_templates/bcc.klist Fe.klist_band
+    $ rm -f GLog.h5
 
-    (b) Type the following command 
-        to calculate the band structure::
+Now the FM calculation can be started as previously::
 
-            $ ${WIEN_GUTZ_ROOT2}/run_ga.py -band
+    $ cd ..  # up to u5j0.8_fm folder
+    $ ${COMRISB_BIN}/comrisb.py -c
 
-    (c) To plot spin-resolved band structure with Fe-3d character,
-        type::
+The job converges with 13 iterations. The *convergence.log* reads like::
 
-            $ ${WIEN_GUTZ_ROOT2}/plot_band_tf.py -h # help info
-            $ ${WIEN_GUTZ_ROOT2}/plot_band_tf.py -el -8 -eh 10
+  i_outer    delta_rho            etot           mu     err_risb       min_z
+  --------  -----------  --------------  -----------  -----------  ----------
+        0   0.00005456  -2540.93820420  -0.10544984  -0.00000539  0.89580499
+        1   0.00001433  -2540.93846530  -0.10545215   0.00000255  0.89580387
+        2   0.00000205  -2540.93842080  -0.11472259  -0.00000066  0.89596959
+        3   0.00000075  -2540.93837572  -0.11994221  -0.00018106  0.89610887
+        4   0.00000053  -2540.93837535  -0.12176499  -0.00000070  0.89607918
+        5   0.00000040  -2540.93839476  -0.12246404  -0.00000350  0.89608366
+        6   0.00000027  -2540.93840743  -0.12315630  -0.00000035  0.89609038
+        7   0.00000016  -2540.93841304  -0.12387580  -0.00000278  0.89609854
+        8   0.00000010  -2540.93841516  -0.12449917  -0.00000282  0.89610619
+        9   0.00000006  -2540.93841626  -0.12498324  -0.00000048  0.89611241
+       10   0.00000004  -2540.93841692  -0.12535097   0.00000165  0.89611723
+       11   0.00000002  -2540.93841800  -0.12563217  -0.00000496  0.89611977
+       12   0.00000001  -2540.93841819  -0.12585449  -0.00000178  0.89612259
+       13   0.00000001  -2540.93841838  -0.12602852  -0.00000106  0.89612503
 
-        You will see the band structure like the following
+The total energy reduces from `-2540.9142` Ry in PM phase to `-2540.9384` 
+in the FM phasse. The `Z`-factor generally increase with symmetry breaking.
+The magnetic moment, as can be located as `total magnetic moment:` 
+in the *lowh/Gutz.log* file, is :math:`2.14 \mu_B`, 
+comparable the experimental result :math:`2.22 \mu_B`.
 
-        .. image:: _images/fe_bands.png
-          :alt: alternate text
-          :scale: 100 %
-          :align: center
+The FM band structure can be calculated as previously::
+
+    $ cd lowh && ${COMRISB_BIN}/plot_band_tf.py -el -10 -eh 8 && cd ..
+
+It generates band structure decorated with `3d`-orbital weights.
+
+.. image:: _images/fefmbands.png
+    :alt: Fe FM bands
+    :scale: 100 %
+    :align: center
+
+This concludes the tutorial of DFT+GRISB calculations of PM and FM phase
+using ComRISB package.
 
 
 .. [Kutepov2017] A.L. Kutepov, V.S. Oudovenko, G. Kotliar,
@@ -159,4 +455,8 @@ including some typical post-analyses.
     Application to semiconductors and simple metals, 
     Comput. Phys. Commun. 219 (2017) 407-414.
 
+.. [Choi2109] S. Choi, P. Semon, B. Kang, A. Kutepov, and G. Kotliar, 
+    ComDMFT: A Massively Parallel Computer Package for the Electronic Structure 
+    of Correlated-Electron Systems, 
+    Comput. Phys. Commun. 244, 277 (2019).
 

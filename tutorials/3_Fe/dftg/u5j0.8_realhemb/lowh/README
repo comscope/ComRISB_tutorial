@@ -1,7 +1,0 @@
-HEmbed.h5   # ignore
-hembed.inp  # ignore
-hembed_res.out  # exact ground state solution and one-particle density matrix
-text_hembed.py  # ignore
-v1e.dat  # one-body part, orbital only
-v2e.dat  # two-body part, orbital only
-
