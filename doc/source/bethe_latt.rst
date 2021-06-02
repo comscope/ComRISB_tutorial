@@ -11,6 +11,9 @@ You will learn:
   in the Gutzwiller-slave-boson theory
 * How to determine the energy gap for the Mott-insulating phase
 
+GRISB calculations with increasing `U`
+======================================
+
 There is predefined class,
 which helps generating the energy mesh with uniform weight.
 
@@ -64,6 +67,9 @@ It will automatically generate the following results:
     :align: center
 
 One can see that the :math:`U_{c}` ~ 3.4 for the metal-insulator transition.
+
+GRISB Mott gap revealed by scanning chemical potential
+======================================================
 
 Although the theory gives a very simplified picture of the Mott insulator,
 i.e., double occupancy or quasi-particle weight is 0, 

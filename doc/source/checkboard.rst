@@ -11,6 +11,9 @@ You will learn:
 * How the Gutzwiller method improves the descriptions
   at Hartree-Fock mean field level.
 
+GRISB calculation in PM state
+=============================
+
 In the model, we use nearest neighbor hopping :math:`t` as the energy unit. 
 A function to setup the model for *CyGutz* calculation has been defined,
 
@@ -54,6 +57,9 @@ It will automatically generate the following results:
 One can see similar generic feature of the local physical quantities
 as in the previous Bethe lattice calculations, 
 albeit a larger :math:`U_{c}` ~ 13 for the metal-insulator transition.
+
+GRISB calculation in AFM state
+==============================
 
 Now let us perform a similar scan of :math:`U` for the checkerboard AFM phase,
 i.e., there are two sublattices with up and down local spin moment.
@@ -102,6 +108,9 @@ renormalization factor :math:`Z` only changes marginally in the AFM phase.
 The local double occupancy decreases smoothly in a nonlinear way 
 in AFM phase, in contrast to the linear decreasing in PM phase.
 
+Hartree-Fock calculation in AFM state
+=====================================
+
 One would be interesting to see how the AFM solution 
 obtained in the Gutzwiller method 
 compare with the results from simple Hartree-Fock (HF) mean-field approach.
@@ -142,6 +151,9 @@ It is consistent with the respect of variational principle,
 because the Gutzwiller approach provides more variational degrees of freedom
 by local Gutzwiller correlator. 
 
+Hartree-Fock calculation in PM state
+====================================
+
 One might be actually surprised for seeing that the spin-unrestricted HF (UHF)
 results are not bad, although HF method is known to not able to 
 describe strong electron correlation effects. 
@@ -163,6 +175,9 @@ The following results will be shown:
 One can clearly see the constant double occupancy 
 and the consequent linear increasing of the total energy 
 in the spin-restricted HF (RHF) calculations.
+
+Final Comparison
+================
 
 Finally, for comparisons with all calculations, type::
 
