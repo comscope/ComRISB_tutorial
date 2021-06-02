@@ -1,5 +1,5 @@
-Installation of CyGutz
-======================
+Installation of ComRISB
+=======================
 
 Prerequisites
 -------------
