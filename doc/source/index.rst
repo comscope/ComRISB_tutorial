@@ -8,6 +8,7 @@ Nicola Lanata, Gabriel Kotliar, with contributions from Xiaoyu Deng, among other
 .. toctree::
   :maxdepth: 2
 
+  install
   bethe_latt
   checkboard
   fe
