@@ -11,6 +11,8 @@ You will learn:
   in the Gutzwiller-slave-boson theory
 * How to determine the energy gap for the Mott-insulating phase
 
+Time for this part: ~30 minutes.
+
 GRISB calculations with increasing `U`
 ======================================
 
