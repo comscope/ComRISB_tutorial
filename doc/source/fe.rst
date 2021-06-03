@@ -1,7 +1,7 @@
 ComRISB calculation of Fe
 -------------------------
 In this example, we will review the DFT-LDA calculations 
-with the FlapwMBPT package [Kutepov2017]_, 
+with the FlapwMBPT package, 
 using :math:`\alpha`-Fe as an example. 
 DFT+GRISB calculations of the paramagnetic (PM) and ferromagnetic (FM) phase 
 with ComRISB package will be demonstrated. 
@@ -172,7 +172,7 @@ To perform DFT+GRISB calculation,
 an additional input file *comrisb.ini* in text format
 is prepared in the upper directory *u0j0*. 
 It is a simplified version of *comdmft.ini* for the DMFT calculation 
-using *comsuite* package [Choi2109]_,
+using ComSUITE package,
 which provides information for the construction of wannier interface
 by the *ComWann* module.
 The *comrisb.ini* reads, in this example, as::
@@ -450,15 +450,3 @@ It generates band structure decorated with `3d`-orbital weights.
 
 This concludes the tutorial of DFT+GRISB calculations of PM and FM phase
 using ComRISB package.
-
-
-.. [Kutepov2017] A.L. Kutepov, V.S. Oudovenko, G. Kotliar,
-    Linearized self-consistent quasiparticle GW method: 
-    Application to semiconductors and simple metals, 
-    Comput. Phys. Commun. 219 (2017) 407-414.
-
-.. [Choi2109] S. Choi, P. Semon, B. Kang, A. Kutepov, and G. Kotliar, 
-    ComDMFT: A Massively Parallel Computer Package for the Electronic Structure 
-    of Correlated-Electron Systems, 
-    Comput. Phys. Commun. 244, 277 (2019).
-

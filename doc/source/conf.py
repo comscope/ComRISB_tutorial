@@ -207,7 +207,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'tutorial.tex', u'ComRISB toturial',
-   u'Yongxin Yao', 'tutorial'),
+   u'Yongxin Yao', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
