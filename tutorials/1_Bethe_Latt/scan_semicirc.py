@@ -176,7 +176,7 @@ def scan_mu(u=5.0):
     generate_data(u_list, mu_list, adiabatic=False, postfix="mu")
 
 
-def plot_scan_u():
+def plot_scan_u(skipshow=False):
     with h5py.File('result_u.h5', 'r') as f:
         u_list = f['/u_list'][()]
         e_list = f['/e_list'][()]
@@ -199,11 +199,12 @@ def plot_scan_u():
     axarr[2].axvline(x=3.4, ls=":")
     axarr[2].text(0.85, 0.7, "(c)", transform=axarr[2].transAxes)
     plt.tight_layout()
-    plt.show()
+    if not skipshow:
+        plt.show()
     f.savefig('result_u.png')
 
 
-def plot_scan_mu():
+def plot_scan_mu(skipshow=False):
     with h5py.File('result_mu.h5', 'r') as f:
         mu_list = f['/mu_list'][()]
         e_list = f['/e_list'][()]
@@ -233,7 +234,8 @@ def plot_scan_mu():
     axarr[3].set_xlim(min(mu_list), max(mu_list))
     axarr[3].text(0.05, 0.7, "(d)", transform=axarr[3].transAxes)
     plt.tight_layout()
-    plt.show()
+    if not skipshow:
+        plt.show()
     f.savefig('result_mu.png')
 
 
@@ -242,11 +244,13 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--mu", action="store_true",
             help="job switch to scan_mu.")
+    parser.add_argument("--skipshow", action="store_true",
+            help="do not display figure..")
     args = parser.parse_args()
 
     if args.mu:
         scan_mu()
-        plot_scan_mu()
+        plot_scan_mu(skipshow=args.skipshow)
     else:
         scan_u()
-        plot_scan_u()
+        plot_scan_u(skipshow=args.skipshow)

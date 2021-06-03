@@ -11,7 +11,7 @@ You will learn:
 * How the Gutzwiller method improves the descriptions
   at Hartree-Fock mean field level.
 
-Time for this part: ~30 minutes.
+Time for this part: ~50 minutes.
 
 GRISB calculation in PM state
 =============================

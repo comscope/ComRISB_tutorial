@@ -6,7 +6,7 @@ using :math:`\alpha`-Fe as an example.
 DFT+GRISB calculations of the paramagnetic (PM) and ferromagnetic (FM) phase 
 with ComRISB package will be demonstrated. 
 
-Time for this part: ~40 minutes.
+Time for this part: ~60 minutes.
 
 DFT-LDA calculation of Fe
 =========================

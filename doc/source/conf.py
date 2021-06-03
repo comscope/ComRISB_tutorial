@@ -206,8 +206,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'ComRISB_toturial.tex', u'ComRISB\\_toturial',
-   u'Yongxin Yao', 'toturial'),
+  ('index', 'tutorial.tex', u'ComRISB toturial',
+   u'Yongxin Yao', 'tutorial'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

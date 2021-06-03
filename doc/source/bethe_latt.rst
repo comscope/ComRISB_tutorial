@@ -11,7 +11,7 @@ You will learn:
   in the Gutzwiller-slave-boson theory
 * How to determine the energy gap for the Mott-insulating phase
 
-Time for this part: ~30 minutes.
+Time for this part: ~10 minutes.
 
 GRISB calculations with increasing `U`
 ======================================
@@ -84,7 +84,7 @@ A script for a job of scanning :math:`\mu` at :math:`U=5` is defined as
 Stay in the same *work* directory 
 and type the following command for calculations to get the band gap::
 
-    $ python ../scan_semicirc.py -mu
+    $ python ../scan_semicirc.py --mu
 
 It will automatically generate the following results:
 

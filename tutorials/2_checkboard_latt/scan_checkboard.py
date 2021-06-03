@@ -163,7 +163,7 @@ def get_scan_data(fname='result'):
     return u_list, e_list, z_list, d_list, m_list
 
 
-def plot_scan_u(fname='result'):
+def plot_scan_u(fname='result', skipshow=False):
     u_list, e_list, z_list, d_list, m_list = get_scan_data(fname=fname)
 
     f, axarr = plt.subplots(2, 2, sharex=True)
@@ -186,7 +186,8 @@ def plot_scan_u(fname='result'):
     axarr[1, 1].set_xlabel('U')
     axarr[1, 0].set_xlim(min(u_list), max(u_list))
     plt.tight_layout()
-    plt.show()
+    if not skipshow:
+        plt.show()
     f.savefig(fname+'.pdf')
 
 
@@ -211,4 +212,4 @@ if __name__=='__main__':
         iembeddiag = -3
 
     scan_u(spindeg=spindeg, fname=fname, iembeddiag=iembeddiag)
-    plot_scan_u(fname=fname)
+    plot_scan_u(fname=fname, skipshow='--skipshow' in sys.argv)
