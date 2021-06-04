@@ -5,7 +5,7 @@ The tutorial is composed of several examples on using the ComRISB package,
 which performs DFT/LQSGW+GRISB calculations of real materials.
 The package is developed by Yongxin Yao, Sangkook Choi, Andrey Kutepov, 
 Byungkyun Kang, Nicola Lanata, Gabriel Kotliar, 
-with contributions from Xiaoyu Deng, Rogers John, among others.
+with contributions from Tsung-Han Lee, Xiaoyu Deng, Rogers John, among others.
 
 The Gutzwiller-rotationally invarient slave-boson (GRISB) theory, 
 algorithm, and implementation is based on refs. [prx2015]_, 
