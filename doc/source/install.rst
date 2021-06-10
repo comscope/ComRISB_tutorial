@@ -1,8 +1,8 @@
 Installation of ComRISB in Quantum Mobile
 =========================================
 
-[Quantum Mobile v21.06.04](https://quantum-mobile.readthedocs.io/en/latest/releases/index.html) has preinstalled everything needed. 
-We just the machine specific setting file *arch.mk*::
+Quantum Mobile [v21.06.04](https://quantum-mobile.readthedocs.io/en/latest/releases/index.html) has preinstalled everything needed. 
+We just use the machine specific setting file *arch.mk*::
 
  # Quantum Mobile v21.06.04
  # https://quantum-mobile.readthedocs.io/en/latest/releases/index.html
