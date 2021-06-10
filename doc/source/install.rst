@@ -1,5 +1,40 @@
-Installation of ComRISB
-=======================
+Installation of ComRISB in Quantum Mobile
+=========================================
+
+[Quantum Mobile v21.06.04](https://quantum-mobile.readthedocs.io/en/latest/releases/index.html) has preinstalled everything needed. 
+We just the machine specific setting file *arch.mk*::
+
+ # Quantum Mobile v21.06.04
+ # https://quantum-mobile.readthedocs.io/en/latest/releases/index.html
+ 
+ compfl = -O2 -w -fbacktrace -ffree-line-length-0
+ 
+ PF90 = h5pfc
+ F90 = h5pfc
+ 
+ FPPFLAGS += -DUSE_HDF5
+ LAPACK_LIB = -lopenblas
+ 
+ FIX_FORM = -ffixed-form
+ FREE_FORM = -ffree-form
+ 
+ # C/C++ compiler
+ CC = gcc
+ C++ = g++
+ 
+ # C compiler options.
+ CFLAGS = -O2
+
+From the folder *comrisb*, type::
+
+    $ make COMRISB_BIN=${PWD}/bin
+    $ source ~/.bashrc
+
+The installation is completed.
+
+
+Installation of ComRISB using Intel environement
+================================================
 
 Prerequisites
 -------------
@@ -24,7 +59,8 @@ Install
 -------
 From the folder *comrisb*, type::
 
-    $ make
+    $ make COMRISB_BIN=${PWD}/bin 
+    $ source ~/.bashrc
 
 Hopefully it will finish the compiling and installation without incidents. 
 Important settings are located in *arch.mk* file::
