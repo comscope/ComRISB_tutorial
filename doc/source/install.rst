@@ -30,6 +30,10 @@ From the folder *comrisb*, type::
     $ make COMRISB_BIN=${PWD}/bin
     $ source ~/.bashrc
 
+Next we make *python3.7* as the default. Type::
+
+ sudo update-alternatives --install /usr/bin/python python3 /usr/bin/python3.7 2
+
 The installation is completed.
 
 

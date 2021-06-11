@@ -59,7 +59,7 @@ is *comrisb_tutorial/tutorials/Bethe_Latt/*,
 type the following command to run the job::
 
     $ mkdir -p work && cd work
-    $ python3.7 ../scan_semicirc.py
+    $ ../scan_semicirc.py
 
 It will automatically generate the following results:
 
@@ -84,7 +84,7 @@ A script for a job of scanning :math:`\mu` at :math:`U=5` is defined as
 Stay in the same *work* directory 
 and type the following command for calculations to get the band gap::
 
-    $ python3.7 ../scan_semicirc.py --mu
+    $ ../scan_semicirc.py --mu
 
 It will automatically generate the following results:
 

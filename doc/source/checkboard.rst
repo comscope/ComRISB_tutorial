@@ -47,7 +47,7 @@ For a hands-on practice, from the directory
 type the following command::
 
     $ mkdir -p work && cd work
-    $ python3.7 ../scan_checkboard.py
+    $ ../scan_checkboard.py
 
 It will automatically generate the following results:
 
@@ -69,7 +69,7 @@ i.e., there are two sublattices with up and down local spin moment.
 Type the same command with an inline argument of '-sp' to trigger 
 the setup of AFM phase::
 
-    $ python3.7 ../scan_checkboard.py -sp
+    $ ../scan_checkboard.py -sp
 
 Here the user is advised to review the previous function gutz_model_setup_.
 
@@ -95,7 +95,7 @@ as it is defined as :math:`<S_{z}> = <n_{up}> - <n_{dn}>`.
 
 To compare the results of PM and AFM phase, type::
 
-    $ python3.7 ../plot_pmafm.py
+    $ ../plot_pmafm.py
 
 One would get the following figure:
 
@@ -118,7 +118,7 @@ obtained in the Gutzwiller method
 compare with the results from simple Hartree-Fock (HF) mean-field approach.
 The HF-type calculations can be conveniently be performed by typing::
 
-    $ python3.7 ../scan_checkboard.py -uhf
+    $ ../scan_checkboard.py -uhf
 
 where the inline argument '-uhf' changes the flag of `iembeddiag` to 10,
 corresponding to solve the embedding Hamiltonian of the Gutzwiller method 
@@ -136,7 +136,7 @@ but here the kinetic energy renormalization factor :math:`Z` is a constant 1.
 
 To compare the three calculations results together, type::
 
-    $ python3.7 ../plot_pmafm_gh.py
+    $ ../plot_pmafm_gh.py
 
 The following figure will be produced:
 
@@ -165,7 +165,7 @@ degenerate ground states has been removed.
 In order yo visualize the ``static correlcation`` error in HF method,
 one can check the HF PM solutions. Typing the following commands::
 
-    $ python3.7 ../scan_checkboard.py -rhf
+    $ ../scan_checkboard.py -rhf
 
 The following results will be shown:
 
@@ -183,7 +183,7 @@ Final Comparison
 
 Finally, for comparisons with all calculations, type::
 
-    $ python3.7 ../plot_pmafm_gh2.py
+    $ ../plot_pmafm_gh2.py
 
 The following produced figure clearly 
 shows the static correlation error of RHF, 
