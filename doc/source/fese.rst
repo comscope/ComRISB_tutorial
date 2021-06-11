@@ -32,7 +32,7 @@ resemble the DFT+GRISB calculations.
 Type::
 
     $ mkdir -p lqsgw_risb/u5j0.8/lowh && cp fese.cif lqsgw_risb/u5j0.8/lowh/. && cd lqsgw_risb/u5j0.8/lowh
-    $ ${COMRISB_BIN}/init_grisb.py -u eV -s 1
+    $ python3.7 ${COMRISB_BIN}/init_grisb.py -u eV -s 1
 
 Make the choices as follows::
 
@@ -158,7 +158,7 @@ which now reads::
 The LQSGW+GRISB calculation is triggered in the same way as before::
 
  $ cd ..  # up to u5j0.8 folder
- $ ${COMRISB_BIN}/comrisb.py -c 
+ $ python3.7 ${COMRISB_BIN}/comrisb.py -c 
 
 Currently, the calculation finishes in one shot, 
 which means the feedback from GRISB to LQSGW calculation 
@@ -199,7 +199,7 @@ The kinetic energy renormalization matrix `R` at GRISB level is given as::
 One can view the band structure in a fine energy window near Fermi level 
 by typing::
 
-    $ cd lowh && ${COMRISB_BIN}/plot_band_tf.py -el -0.2 -eh 0.2 && cd ..
+    $ cd lowh && python3.7 ${COMRISB_BIN}/plot_band_tf.py -el -0.2 -eh 0.2 && cd ..
 
 It generates the following band structure decorated with `3d`-orbital weights.
 

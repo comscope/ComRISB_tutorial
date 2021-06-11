@@ -15,10 +15,10 @@ to finish the DFT-LDA calculations. Type::
 
     $ mkdir -p dft && cd dft
     $ # create files ini, kpath, and kpoints for FlapwMBPT calculation.
-    $ ${COMRISB_BIN}/../ComBin/cif2matdelab.py ../bcc.cif -k 3
+    $ python3.7 ${COMRISB_BIN}/../ComBin/cif2matdelab.py ../bcc.cif -k 3
     $ # create your own job file and submit 
     $ # or directly run FlapwMBPT if convenient.
-    $ mpirun -np 8 ${COMRISB_BIN}/rspflapw.exe
+    $ mpirun -np 2 ${COMRISB_BIN}/rspflapw.exe
 
 After the default 40 iterations, the charge density converges at
 
@@ -40,7 +40,7 @@ Changing back to the directory *3_Fe*, follow the steps below
 to finish the DFT+GRISB calculations with zero interaction. Type::
 
     $ mkdir -p dftg/u0j0/lowh && cp bcc.cif dftg/u0j0/lowh/. && cd dftg/u0j0/lowh
-    $ ${COMRISB_BIN}/init_grisb.py -u eV -s 1
+    $ python3.7 ${COMRISB_BIN}/init_grisb.py -u eV -s 1
     $ # -u eV: set internal energy unit to be eV.
     $ # -s 1: set spin z-component order to be -1/2 to 1/2.
 
@@ -195,7 +195,7 @@ To run the DFT+GRISB calculation, execute the following command
 or prepare your job script accordingly and submit::
 
     $ cd ..  # up to u0j0 folder
-    $ ${COMRISB_BIN}/comrisb.py -c  # -c: continuous run
+    $ python3.7 ${COMRISB_BIN}/comrisb.py -c  # -c: continuous run
 
 As expected, the job converges with one iteration. 
 The file *convergence.log* records the convergence information::
@@ -233,7 +233,7 @@ and 0.60 for each :math:`e_{g}` orbital., with total 6.46 `3d`-electrons.
 
 The band structure can be obtained by using the following script::
 
-    $ cd lowh && ${COMRISB_BIN}/plot_band_tf.py -el -10 -eh 8 && cd ..
+    $ cd lowh && python3.7 ${COMRISB_BIN}/plot_band_tf.py -el -10 -eh 8 && cd ..
 
 It generates band structure decorated with `3d`-orbital weights.
 
@@ -250,12 +250,12 @@ Here we introduce an alternative easier way by simply modifying the parameters
 with provided scripts. Starting with directory *u0j0*, type::
 
     $ cd ../ && cp -r u0j0 u5j0.8 && cd u5j0.8/lowh/
-    $ ${COMRISB_BIN}/switch_gparam.py --unique_u_ev 5 --unique_j_ev 0.8
+    $ python3.7 ${COMRISB_BIN}/switch_gparam.py --unique_u_ev 5 --unique_j_ev 0.8
 
 Now we can start the calculation as previously::
 
     $ cd ..  # up to u5j0.8 folder
-    $ ${COMRISB_BIN}/comrisb.py -c
+    $ python3.7 ${COMRISB_BIN}/comrisb.py -c
 
 It will take 16 iterations to converge, with the *convergence.log* file::
 
@@ -326,7 +326,7 @@ from identity to 0.88 and 0.82 respectively.
 The Gutzwiller quasi-particle band structure can be obtained 
 by using the same script as previously::
 
-    $ cd lowh && ${COMRISB_BIN}/plot_band_tf.py -el -10 -eh 8 && cd ..
+    $ cd lowh && python3.7 ${COMRISB_BIN}/plot_band_tf.py -el -10 -eh 8 && cd ..
 
 It generates band structure decorated with `3d`-orbital weights.
 
@@ -382,7 +382,7 @@ for spin-symmetry breaking::
 Further information about how the spin symmetry is to be broken 
 needs to be provided through the script *init_magnetism.py*::
 
-    $ ${COMRISB_BIN}/init_magnetism.py
+    $ python3.7 ${COMRISB_BIN}/init_magnetism.py
 
 and choose the following as below::
 
@@ -410,7 +410,7 @@ as it save the PM solution::
 Now the FM calculation can be started as previously::
 
     $ cd ..  # up to u5j0.8_fm folder
-    $ ${COMRISB_BIN}/comrisb.py -c
+    $ python3.7 ${COMRISB_BIN}/comrisb.py -c
 
 The job converges with 13 iterations. The *convergence.log* reads like::
 
@@ -439,7 +439,7 @@ comparable the experimental result :math:`2.22 \mu_B`.
 
 The FM band structure can be calculated as previously::
 
-    $ cd lowh && ${COMRISB_BIN}/plot_band_tf.py -el -10 -eh 8 && cd ..
+    $ cd lowh && python3.7 ${COMRISB_BIN}/plot_band_tf.py -el -10 -eh 8 && cd ..
 
 It generates band structure decorated with `3d`-orbital weights.
 
