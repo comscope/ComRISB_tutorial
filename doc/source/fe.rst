@@ -338,7 +338,7 @@ It generates band structure decorated with `3d`-orbital weights.
 To contrast the DFT+GRISB band structure of Fe 
 with DFT-LDA results obtained earlier, type::
     
-    $ cd ../figure1 && plot.py && cd ../u5j0.8
+    $ cd ../figure1 && python plot.py && cd ../u5j0.8
 
 and one obtained the following figure.
 
