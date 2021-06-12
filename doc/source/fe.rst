@@ -373,11 +373,13 @@ for PM GRISB calculation.
 To introduce spin symmetry breaking, 
 one could delete *ginit.json* and answer questions properly 
 while running *init_grisb.py*. 
-We take another easier route by editing the *ginit.json* file. 
+We take another easier route by editing the *ginit.json* file, 
+and reinitialize.
 Type the fillowing command to replace the value of *1* by *2*
 for spin-symmetry breaking::
 
     $ sed -i 's/"ispin": 1/"ispin": 2/' ginit.json
+    $ ${COMRISB_BIN}/init_grisb.py -u eV -s 1 
 
 Further information about how the spin symmetry is to be broken 
 needs to be provided through the script *init_magnetism.py*::

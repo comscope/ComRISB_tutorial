@@ -34,6 +34,10 @@ Next we make *python3.7* as the default. Type::
 
  sudo update-alternatives --install /usr/bin/python python3 /usr/bin/python3.7 2
 
+And also install *hdf5-tools* by typing::
+
+ sudo apt-get install -y hdf5-tools
+
 The installation is completed.
 
 
