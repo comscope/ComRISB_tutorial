@@ -158,7 +158,7 @@ which now reads::
 The LQSGW+GRISB calculation is triggered in the same way as before::
 
  $ cd ..  # up to u5j0.8 folder
- $ ${COMRISB_BIN}/comrisb.py -c 
+ $ python3.7 ${COMRISB_BIN}/comrisb.py -c 
 
 Currently, the calculation finishes in one shot, 
 which means the feedback from GRISB to LQSGW calculation 

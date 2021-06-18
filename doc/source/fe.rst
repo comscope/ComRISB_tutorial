@@ -195,7 +195,7 @@ To run the DFT+GRISB calculation, execute the following command
 or prepare your job script accordingly and submit::
 
     $ cd ..  # up to u0j0 folder
-    $ ${COMRISB_BIN}/comrisb.py -c  # -c: continuous run
+    $ python3.7 ${COMRISB_BIN}/comrisb.py -c  # -c: continuous run
 
 As expected, the job converges with one iteration. 
 The file *convergence.log* records the convergence information::
@@ -255,7 +255,7 @@ with provided scripts. Starting with directory *u0j0*, type::
 Now we can start the calculation as previously::
 
     $ cd ..  # up to u5j0.8 folder
-    $ ${COMRISB_BIN}/comrisb.py -c
+    $ python3.7 ${COMRISB_BIN}/comrisb.py -c
 
 It will take 16 iterations to converge, with the *convergence.log* file::
 
@@ -412,7 +412,7 @@ as it save the PM solution::
 Now the FM calculation can be started as previously::
 
     $ cd ..  # up to u5j0.8_fm folder
-    $ ${COMRISB_BIN}/comrisb.py -c
+    $ python3.7 ${COMRISB_BIN}/comrisb.py -c
 
 The job converges with 13 iterations. The *convergence.log* reads like::
 
