@@ -210,3 +210,19 @@ It generates the following band structure decorated with `3d`-orbital weights.
 
 
 This concludes the tutorial of ComRISB.
+
+Further reference on this topic: [Zhang15]_ for experiment 
+and [Choi19]_ for DMFT results.
+
+
+.. [Zhang15] P. Zhang, T. Qian, P. Richard, X. P. Wang, H. Miao, 
+    B. Q. Lv, B. B. Fu, T. Wolf, C. Meingast, X. X. Wu, 
+    Z. Q. Wang, J. P. Hu, and H. Ding, 
+    Observation of Two Distinct ${d}_{xz}$/${d}_{yz}$ Band Splittings in FeSe, 
+    Phys. Rev. B 91, 214503 (2015).
+
+.. [Choi19] S. Choi, P. Semon, B. Kang, A. Kutepov, and G. Kotliar, 
+    ComDMFT: A Massively Parallel Computer Package 
+    for the Electronic Structure of Correlated-Electron Systems, 
+    Computer Physics Communications 244, 277 (2019).
+

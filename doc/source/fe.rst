@@ -6,7 +6,7 @@ using :math:`\alpha`-Fe as an example.
 DFT+GRISB calculations of the paramagnetic (PM) and ferromagnetic (FM) phase 
 with ComRISB package will be demonstrated. 
 
-Time for this part: ~60 minutes.
+Time for this part: ~90 minutes.
 
 DFT-LDA calculation of Fe
 =========================
@@ -452,3 +452,27 @@ It generates band structure decorated with `3d`-orbital weights.
 
 This concludes the tutorial of DFT+GRISB calculations of PM and FM phase
 using ComRISB package.
+
+Further reading on this topic: [Deng08]_, [Lanata13]_, [Borghi14]_, [Schickling16]_.
+
+
+.. [Deng08] X. Y. Deng, X. Dai, and Z. Fang, 
+    LDA+Gutzwiller Method for Correlated Electron Systems, 
+    EPL (Europhysics Letters) 83, 37008 (2008).
+
+.. [Lanata13] N. Lanata, H. U. R. Strand, G. Giovannetti, B. Hellsing, 
+    L. de Medici, and M. Capone, 
+    Orbital Selectivity in Hund's Metals: The Iron Chalcogenides, 
+    Phys. Rev. B 87, 045122 (2013).
+
+.. [Borghi14] G. Borghi, M. Fabrizio, and E. Tosatti, 
+    Gutzwiller Electronic Structure Calculations Applied to Transition Metals: 
+    Kinetic Energy Gain with Ferromagnetic Order in Bcc Fe, 
+    Phys. Rev. B 90, 125102 (2014).
+
+.. [Schickling16] T. Schickling, J. BÃ¼nemann, F. Gebhard, and L. Boeri,
+    Quasiparticle Bands and Structural Phase Transition of 
+    Iron from Gutzwiller Density-Functional Theory, 
+    Phys. Rev. B 93, 205151 (2016).
+
+
