@@ -32,7 +32,7 @@ in paramagnetic (PM) or AFM phase.
 Let us perform a series of *CyGutz* calculations with increasing :math:`U`
 in the PM phase, 
 and check the behavior of the total energy, double occupancy, 
-and quasi-particle weight (Z),
+and quasi-particle weight (`Z`),
 in a similar way as in the example of Bethe lattice.
 Recall that in Gutzwiller-RISB theory,
 Z=0 implies the system is in the Mott insulating phase,
@@ -46,8 +46,7 @@ For a hands-on practice, from the directory
 *comrisb_tutorial/tutorials/checkboard_latt* 
 type the following command::
 
-    $ mkdir -p work && cd work
-    $ python ../scan_checkboard.py
+    $ mkdir -p work && cd work && python3.7 ../scan_checkboard.py
 
 It will automatically generate the following results:
 
@@ -56,6 +55,8 @@ It will automatically generate the following results:
     :scale: 100 %
     :align: center
 
+Besides the total energy, double occupancy and `Z`, 
+we added the local magnetization in the 4th panel.
 One can see similar generic feature of the local physical quantities
 as in the previous Bethe lattice calculations, 
 albeit a larger :math:`U_{c}` ~ 13 for the metal-insulator transition.
@@ -73,8 +74,8 @@ the setup of AFM phase::
 
 Here the user is advised to review the previous function gutz_model_setup_.
 
-where spindeg changes to ``False`` by the inline argument '-sp',
-and 'updn_full_list=[1,-1]' will be used in the ``batch_initialize``.
+The spindeg changes to ``False`` by the inline argument '-sp',
+and spin 'updn_full_list=[1, -1]' will be used in the ``batch_initialize``.
 The following figure will be automatically generated:
 
 .. image:: _images/checkboard_afm.png
@@ -92,6 +93,11 @@ which will reduce :math:`Z`, and that of approaching empty/full filling
 of the single spin-orbital channels,
 evidenced by the rising local spin moment, 
 as it is defined as :math:`<S_{z}> = <n_{up}> - <n_{dn}>`.
+
+.. note::
+    Spatial correlation will typically reduce the magnitude 
+    of the local magnetization. 
+    Therefore, the local :math:`<S_{z}>` is overestimated here.
 
 To compare the results of PM and AFM phase, type::
 
