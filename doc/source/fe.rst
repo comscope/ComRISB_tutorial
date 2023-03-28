@@ -1,7 +1,7 @@
 ComRISB calculation of Fe
 -------------------------
 In this example, we will review the DFT-LDA calculations 
-with the FlapwMBPT package, 
+with the LQSGW software package,
 using :math:`\alpha`-Fe as an example. 
 DFT+GRISB calculations of the paramagnetic (PM) and ferromagnetic (FM) phase 
 with ComRISB package will be demonstrated. 
@@ -14,10 +14,10 @@ Starting with the directory *3_Fe*, follow the steps below
 to finish the DFT-LDA calculations. Type::
 
     $ mkdir -p dft && cd dft
-    $ # create files ini, kpath, and kpoints for FlapwMBPT calculation.
+    $ # create files ini, kpath, and kpoints for LQSGW dft calculation.
     $ ${COMRISB_BIN}/../ComBin/cif2matdelab.py ../bcc.cif -k 3
     $ # create your own job file and submit 
-    $ # or directly run FlapwMBPT if convenient.
+    $ # or directly run LQSGW if convenient.
     $ mpirun -np 2 ${COMRISB_BIN}/rspflapw.exe
 
 After the default 40 iterations, the charge density converges at

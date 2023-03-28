@@ -10,7 +10,7 @@ with contributions from Tsung-Han Lee, Xiaoyu Deng, Rogers John, among others.
 The Gutzwiller-rotationally invarient slave-boson (GRISB) theory, 
 algorithm, and implementation is based on refs. [prx2015]_, 
 [prl2017]_, and [prb2021]_. 
-The FlapwMBPT package performs the DFT/LQSGW calculations [Kutepov2017]_.
+The LQSGW software package performs the DFT/LQSGW calculations [Kutepov2017]_.
 ComRISB shares the same interface of the ComDMFT package 
 with slight modifications [Choi2109]_.
 
